@@ -1,0 +1,22 @@
+# ---- 隐私：绝对不能进公开仓库 ----
+# 我的信息.md 内含手机号与内部写作备注
+我的信息.md
+# .claude/ 是本地工具配置，含与本项目无关的授权记录
+.claude/
+
+# ---- 工作文件，非交付物 ----
+CLAUDE.md
+# docs/ 是赛题原文与 PDF，属主办方材料，不转发
+docs/
+
+# ---- Python ----
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# ---- 系统 ----
+Thumbs.db
+desktop.ini
+.DS_Store

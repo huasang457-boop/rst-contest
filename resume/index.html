@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>伍梓侨 · 个人简历</title>
+<meta name="description" content="伍梓侨 —— 新疆大学 2026 级机械设计制造及其自动化专业新生。">
+<meta name="author" content="伍梓侨">
+<link rel="stylesheet" href="style.css">
+<!-- 内联 SVG 图标，无外部图标库依赖；favicon 用 data URI，避免额外请求 -->
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='24'>🏜️</text></svg>">
+</head>
+<body>
+
+<!-- ══════════ 顶部导航 ══════════
+     桌面端为横向导航条；≤768px 折叠为汉堡菜单（见 script.js） -->
+<header class="site-header" id="siteHeader">
+  <div class="nav-inner">
+    <a class="brand" href="#top" aria-label="返回顶部">
+      <span class="brand-mark">WZQ</span>
+      <span class="brand-name">伍梓侨</span>
+    </a>
+
+    <!-- 汉堡按钮：仅移动端可见 -->
+    <button class="nav-toggle" id="navToggle" aria-label="展开导航菜单" aria-expanded="false" aria-controls="navMenu">
+      <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+    </button>
+
+    <nav class="nav-menu" id="navMenu" aria-label="主导航">
+      <a href="#education">教育</a>
+      <a href="#journey">轨迹</a>
+      <a href="#skills">技能</a>
+      <a href="#projects">作品</a>
+      <a href="#about">关于</a>
+      <!-- 主题切换：状态写入 localStorage，见 script.js -->
+      <button class="theme-toggle" id="themeToggle" aria-label="切换深色 / 浅色主题">
+        <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="12" cy="12" r="4.2"/>
+          <g stroke-linecap="round">
+            <line x1="12" y1="2.5" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="21.5"/>
+            <line x1="2.5" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="21.5" y2="12"/>
+            <line x1="5.2" y1="5.2" x2="7" y2="7"/><line x1="17" y1="17" x2="18.8" y2="18.8"/>
+            <line x1="18.8" y1="5.2" x2="17" y2="7"/><line x1="7" y1="17" x2="5.2" y2="18.8"/>
+          </g>
+        </svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z"/>
+        </svg>
+      </button>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+<!-- ══════════ 首屏 ══════════
+     背景为纯 CSS 绘制的戈壁地平线，无图片素材 -->
+<section class="hero">
+  <div class="dunes" aria-hidden="true">
+    <div class="sun"></div>
+    <div class="dune dune-3"></div>
+    <div class="dune dune-2"></div>
+    <div class="dune dune-1"></div>
+  </div>
+
+  <div class="hero-inner">
+    <div class="hero-text">
+      <p class="eyebrow reveal" data-delay="0">新疆大学 · 2026 级新生</p>
+      <h1 class="reveal" data-delay="1">伍<span class="thin">梓</span>侨</h1>
+      <p class="tagline reveal" data-delay="2">
+        机械设计制造及其自动化专业。<br>
+        高考结束后开始自学编程，<strong>入学前完成了第一个能跑起来的作品</strong>。
+      </p>
+
+      <ul class="hero-meta reveal" data-delay="3">
+        <li>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18v12H3z"/><path d="M3 6l9 7 9-7"/></svg>
+          <a href="mailto:411264013@qq.com">411264013@qq.com</a>
+        </li>
+        <li>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.6"/></svg>
+          <span>广东佛山</span>
+        </li>
+        <li>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 19c-4 1.4-4-2.4-6-3m12 5v-3.9a3.4 3.4 0 0 0-.9-2.6c3-.3 6.2-1.5 6.2-6.7A5.2 5.2 0 0 0 19 3.3a4.9 4.9 0 0 0-.1-3.6s-1.1-.3-3.6 1.4a12.3 12.3 0 0 0-6.6 0C6.2-.6 5.1-.3 5.1-.3A4.9 4.9 0 0 0 5 3.3 5.2 5.2 0 0 0 3.6 6.9c0 5.2 3.2 6.4 6.2 6.7a3.4 3.4 0 0 0-.9 2.5V20"/></svg>
+          <a href="https://github.com/huasang457-boop" target="_blank" rel="noopener">github.com/huasang457-boop</a>
+        </li>
+      </ul>
+
+      <!-- 联系方式仅保留邮箱。手机号不写入本页（包括注释），
+           因为页面源码在线公开可见，写在注释里同样会被爬虫抓取。 -->
+    </div>
+
+    <figure class="hero-photo reveal" data-delay="2">
+      <!-- 图片放在本目录内，使 resume/ 可独立部署，不依赖上级目录 -->
+      <img src="avatar.jpg" alt="伍梓侨的个人照片" width="1281" height="1280" loading="eager">
+      <figcaption class="photo-tag">WZQ</figcaption>
+    </figure>
+  </div>
+
+  <a class="scroll-cue" href="#education" aria-label="向下滚动">
+    <span></span>
+  </a>
+</section>
+
+<!-- ══════════ 教育背景 ══════════ -->
+<section id="education" class="section">
+  <div class="wrap">
+    <header class="section-head reveal">
+      <span class="sec-index">01</span>
+      <h2>教育背景</h2>
+    </header>
+
+    <div class="edu-card reveal">
+      <div class="edu-main">
+        <h3>新疆大学</h3>
+        <p class="edu-major">机械设计制造及其自动化 · 本科</p>
+        <p class="edu-note">国家「双一流」建设高校</p>
+      </div>
+      <div class="edu-side">
+        <p class="edu-time">2026.09 <span>—</span> 2030.06</p>
+        <p class="edu-status">预计毕业</p>
+      </div>
+    </div>
+
+    <p class="note reveal">
+      2026 级新生，尚未入学，因此本页不列 GPA 与在校课程 ——
+      下面展示的是<strong>入学之前我已经做出来的东西</strong>。
+    </p>
+  </div>
+</section>
+
+<!-- ══════════ 自学轨迹（特色区块） ══════════
+     这是本页的叙事主体：用真实文件的时间戳还原两个月的自学过程 -->
+<section id="journey" class="section section-alt">
+  <div class="wrap">
+    <header class="section-head reveal">
+      <span class="sec-index">02</span>
+      <h2>两个月，从第一个程序到第一个作品</h2>
+      <p class="section-dek">下面每一条都对应一个真实存在的源文件，时间取自文件创建日期。</p>
+    </header>
+
+    <ol class="timeline">
+      <li class="reveal">
+        <time datetime="2026-06-25">06 / 25</time>
+        <div class="tl-body">
+          <h4>第一个能跑的 C 程序</h4>
+          <p>高考结束。一个计算找零的小程序，17 行。<code>scanf</code> / <code>printf</code> / 变量。</p>
+        </div>
+      </li>
+      <li class="reveal">
+        <time datetime="2026-07-01">07 / 01</time>
+        <div class="tl-body">
+          <h4>单位换算</h4>
+          <p>厘米转英寸。开始处理整数与浮点的取值差异。</p>
+        </div>
+      </li>
+      <li class="reveal">
+        <time datetime="2026-07-03">07 / 03</time>
+        <div class="tl-body">
+          <h4>条件分支</h4>
+          <p>收银找零，加入 <code>if / else</code> 判断票额是否足够。</p>
+        </div>
+      </li>
+      <li class="reveal">
+        <time datetime="2026-07-09">07 / 09</time>
+        <div class="tl-body">
+          <h4>数位分解</h4>
+          <p>用 <code>while</code> 循环把一个整数逐位拆开。第一次写循环。</p>
+        </div>
+      </li>
+      <li class="reveal">
+        <time datetime="2026-07-18">07 / 18</time>
+        <div class="tl-body">
+          <h4>素数判断</h4>
+          <p>循环 + 标志变量。开始理解「用一个变量记录状态」这件事。</p>
+        </div>
+      </li>
+      <li class="reveal">
+        <time datetime="2026-07-26">07 / 26</time>
+        <div class="tl-body">
+          <h4>嵌套循环筛素数</h4>
+          <p>输出 100 以内全部素数。两层循环，一个月里最复杂的一个。</p>
+        </div>
+      </li>
+      <li class="reveal is-peak">
+        <time datetime="2026-08">08 月</time>
+        <div class="tl-body">
+          <h4>坦克大战 · 2127 行</h4>
+          <p>换一种方式做更大的东西：由我定义需求与验收标准，用 AI 编程工具实现一个可运行的完整游戏。</p>
+        </div>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- ══════════ 专业技能 ══════════ -->
+<section id="skills" class="section">
+  <div class="wrap">
+    <header class="section-head reveal">
+      <span class="sec-index">03</span>
+      <h2>专业技能</h2>
+      <p class="section-dek">每一项都按实际掌握程度标注，不夸大。</p>
+    </header>
+
+    <div class="skill-grid">
+      <article class="skill reveal">
+        <div class="skill-top">
+          <h3>C / C++</h3>
+          <span class="level level-2">入门</span>
+        </div>
+        <p>2026 年 6 月起自学。掌握变量、输入输出、条件分支、循环与嵌套循环。</p>
+        <p class="skill-honest">尚未涉及数组、指针与结构体 —— 计划在大一上学期补齐。</p>
+      </article>
+
+      <article class="skill reveal">
+        <div class="skill-top">
+          <h3>Python</h3>
+          <span class="level level-1">了解</span>
+        </div>
+        <p>坦克大战作品的项目语言，配合 pygame 使用。</p>
+        <p class="skill-honest">能读懂项目结构与配置项，独立编写能力仍在建立中。</p>
+      </article>
+
+      <article class="skill reveal">
+        <div class="skill-top">
+          <h3>AI 编程工具</h3>
+          <span class="level level-3">能独立交付</span>
+        </div>
+        <p>能把一个模糊想法拆成明确需求、约束与验收标准，驱动工具产出可运行的成品，并完成验收与交付。</p>
+        <p class="skill-honest">这是我目前最有把握的一项能力。</p>
+      </article>
+
+      <article class="skill reveal">
+        <div class="skill-top">
+          <h3>Git / GitHub</h3>
+          <span class="level level-1">基础</span>
+        </div>
+        <p>代码托管、版本管理、静态页面部署。</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ 项目经历 ══════════ -->
+<section id="projects" class="section section-alt">
+  <div class="wrap">
+    <header class="section-head reveal">
+      <span class="sec-index">04</span>
+      <h2>作品</h2>
+    </header>
+
+    <article class="project reveal">
+      <div class="project-head">
+        <h3>坦克大战 · WZQ</h3>
+        <span class="project-time">2026.08</span>
+      </div>
+      <p class="project-role"><strong>我的角色：</strong>需求定义与验收</p>
+      <p>
+        我确定了玩法目标与全部约束 —— 原创校园场景底图、战场中央用砖墙拼出姓名缩写
+        <strong>WZQ</strong>、不使用任何第三方图片与音频素材 ——
+        由 AI 编程工具实现，我负责运行验收、演示录制与交付打包。
+      </p>
+      <ul class="project-facts">
+        <li><b>2127</b><span>行代码</span></li>
+        <li><b>8</b><span>个功能模块</span></li>
+        <li><b>0</b><span>个第三方素材</span></li>
+      </ul>
+      <!-- 演示动画：由游戏自带的 --demo 自动演示模式录制，非手动剪辑
+           lazy 加载，不拖慢首屏 -->
+      <figure class="project-demo">
+        <img src="tank-demo.gif" alt="坦克大战演示动画：战场中央的金色砖墙拼出 WZQ 字样，背景为校园黄昏场景"
+             width="457" height="312" loading="lazy" decoding="async">
+        <figcaption>
+          自动演示模式录制 · 战场中央金色砖墙拼出 <strong>WZQ</strong>，底图为程序化绘制的校园黄昏场景
+        </figcaption>
+      </figure>
+
+      <p class="project-stack">Python 3.12 · pygame 2.6 · 全部美术与音效由代码生成</p>
+      <p class="project-honest">
+        说明：本项目的代码实现由 AI 编程工具完成，我的贡献是需求定义与验收，
+        不主张对具体算法实现的作者身份。
+      </p>
+    </article>
+
+    <article class="project reveal">
+      <div class="project-head">
+        <h3>本页 · 个人在线简历</h3>
+        <span class="project-time">2026.08</span>
+      </div>
+      <p>
+        响应式单页，适配手机与桌面。深浅双主题并记忆选择，滚动进入视口渐显，首屏错落入场。
+      </p>
+      <p class="project-stack">原生 HTML / CSS / JavaScript · 零外部依赖 · 可直接双击打开</p>
+    </article>
+  </div>
+</section>
+
+<!-- ══════════ 关于我 ══════════ -->
+<section id="about" class="section">
+  <div class="wrap">
+    <header class="section-head reveal">
+      <span class="sec-index">05</span>
+      <h2>关于我</h2>
+    </header>
+
+    <blockquote class="statement reveal">
+      <p>
+        我录取的是机械设计制造及其自动化 —— 编程不是我的专业课，是我自己想走的方向。
+      </p>
+      <p>
+        比起把语法学完再动手，我更倾向于先定一个「能跑起来」的目标，再倒推需要补什么。
+      </p>
+      <p>
+        我清楚自己的起点：C 才刚入门，游戏的实现细节我还讲不透。
+        但<strong>「把一件东西从想法做到能交付」这个过程，我已经完整走过一遍了</strong>。
+      </p>
+    </blockquote>
+
+    <div class="interests reveal">
+      <h3>此外</h3>
+      <ul>
+        <li>喜欢写东西，正在准备做图文内容账号</li>
+        <li>关注电脑硬件与数码</li>
+        <li>游戏</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ══════════ 页脚 ══════════ -->
+<footer class="site-footer">
+  <div class="wrap footer-inner">
+    <div>
+      <p class="footer-name">伍梓侨 <span>WZQ</span></p>
+      <p class="footer-sub">新疆大学 · 机械设计制造及其自动化 · 2026 级</p>
+    </div>
+    <ul class="footer-links">
+      <li><a href="mailto:411264013@qq.com">411264013@qq.com</a></li>
+      <li><a href="https://github.com/huasang457-boop" target="_blank" rel="noopener">github.com/huasang457-boop</a></li>
+    </ul>
+  </div>
+  <p class="colophon">
+    本页为 RST 竞赛训练营入营筛选赛作品 · 原生 HTML / CSS / JS 手写，无框架与外部依赖
+  </p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
