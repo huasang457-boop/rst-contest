@@ -68,14 +68,15 @@
     });
   }
 
-  /* ---------- 3. 滚动渐显 ---------- */
+  /* ---------- 3. 滚动渐显 ----------
+     内容默认可见（见 style.css 第 12 节）。只有确认能正常做动画时，
+     才加 .js-reveal 把元素藏起来——否则宁可不要动画，也不能让页面空白。 */
   var reveals = document.querySelectorAll('.reveal');
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  if (reduceMotion || !('IntersectionObserver' in window)) {
-    // 关闭动效偏好，或浏览器过旧：直接全部显示，保证内容可读
-    reveals.forEach(function (el) { el.classList.add('is-visible'); });
-  } else {
+  if (!reduceMotion && 'IntersectionObserver' in window && reveals.length) {
+    root.classList.add('js-reveal');
+
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
         if (entry.isIntersecting) {
@@ -86,6 +87,14 @@
     }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
 
     reveals.forEach(function (el) { io.observe(el); });
+
+    // 兜底：某些环境（页面不合成帧、后台标签页等）下 IntersectionObserver
+    // 可能一直不回调。3 秒后若首屏元素仍未显示，就全部放出来。
+    setTimeout(function () {
+      if (!document.querySelector('.reveal.is-visible')) {
+        reveals.forEach(function (el) { el.classList.add('is-visible'); });
+      }
+    }, 3000);
   }
 
   /* ---------- 4. 顶栏滚动分隔线 ---------- */

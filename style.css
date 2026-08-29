@@ -381,13 +381,16 @@ p { margin: 0; }
   border-top: 1px solid var(--rule); font-size: .8rem; color: var(--ink-3); text-align: center;
 }
 
-/* ---------- 12. 入场 / 滚动渐显动画 ---------- */
-.reveal { opacity: 0; transform: translateY(18px); transition: opacity .7s ease, transform .7s ease; }
-.reveal.is-visible { opacity: 1; transform: none; }
+/* ---------- 12. 入场 / 滚动渐显动画 ----------
+   渐进增强：默认状态是「可见」。只有当 script.js 成功执行、
+   在 <html> 上加了 .js-reveal 之后，才把元素藏起来等待入场。
+   这样一旦 JS 加载失败或出错，页面仍然完整可读，而不是一片空白。 */
+.js-reveal .reveal { opacity: 0; transform: translateY(18px); transition: opacity .7s ease, transform .7s ease; }
+.js-reveal .reveal.is-visible { opacity: 1; transform: none; }
 /* 首屏错落延迟：一次编排好的入场，胜过一堆零散微交互 */
-.reveal[data-delay="1"] { transition-delay: .10s; }
-.reveal[data-delay="2"] { transition-delay: .20s; }
-.reveal[data-delay="3"] { transition-delay: .30s; }
+.js-reveal .reveal[data-delay="1"] { transition-delay: .10s; }
+.js-reveal .reveal[data-delay="2"] { transition-delay: .20s; }
+.js-reveal .reveal[data-delay="3"] { transition-delay: .30s; }
 
 /* ---------- 13. 响应式 ---------- */
 @media (max-width: 900px) {
