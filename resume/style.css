@@ -344,6 +344,13 @@ p { margin: 0; }
 }
 .project-demo figcaption strong { color: var(--sand); font-weight: 500; }
 
+/* 作品卡片底部的链接行：开源地址与线上地址 */
+.project-links { display: flex; flex-wrap: wrap; gap: 10px 22px; margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--rule); }
+.project-links li { display: flex; align-items: center; gap: 7px; font-size: .88rem; }
+.project-links svg { width: 15px; height: 15px; flex: none; fill: none; stroke: var(--sand); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+.project-links a { color: var(--ink-2); border-bottom: 1px solid var(--rule-2); transition: color .2s, border-color .2s; }
+.project-links a:hover { color: var(--sand); border-bottom-color: var(--sand); }
+
 .project-stack { font-family: var(--mono); font-size: .82rem !important; color: var(--ink-3) !important; }
 .project-honest {
   font-size: .84rem !important; color: var(--ink-3) !important; margin-bottom: 0 !important;

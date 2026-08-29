@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>伍梓侨 · 坦克大战提交说明</title>
+<style>
+:root{
+  --bg:#F4EFE4; --surface:#FCFAF4; --surface-2:#EBE3D2;
+  --ink:#26201A; --ink-2:#6A5D4C; --ink-3:#9C8F7B;
+  --rule:#DDD3C0; --rule-2:#C8BCA4;
+  --sand:#B85C2B; --gold:#B4821F; --gold-soft:#F3E9C4;
+  --serif:"Noto Serif SC","Source Han Serif SC","Songti SC",STSong,SimSun,Georgia,serif;
+  --sans:"PingFang SC","Microsoft YaHei","Hiragino Sans GB",system-ui,sans-serif;
+  --mono:"Cascadia Mono",Consolas,"Courier New",monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --bg:#10161F; --surface:#18202B; --surface-2:#202A37;
+    --ink:#EDE5D6; --ink-2:#A79C8A; --ink-3:#6D6656;
+    --rule:#28323F; --rule-2:#3A4756;
+    --sand:#E0793F; --gold:#E5B75C; --gold-soft:#33291F;
+  }
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.8;-webkit-font-smoothing:antialiased}
+.wrap{max-width:820px;margin:0 auto;padding:56px 24px 80px}
+a{color:var(--sand)}
+h1{font-family:var(--serif);font-weight:900;font-size:clamp(1.9rem,5vw,2.6rem);line-height:1.2;margin:0 0 8px;letter-spacing:.02em}
+.sub{color:var(--ink-2);margin:0 0 30px;font-size:1rem}
+.sub b{color:var(--ink);font-weight:500}
+
+figure{margin:0 0 30px}
+figure img{width:100%;max-width:640px;height:auto;border:1px solid var(--rule-2);border-radius:4px;background:var(--surface-2);display:block}
+figcaption{margin-top:10px;font-size:.85rem;color:var(--ink-3);line-height:1.6}
+figcaption b{color:var(--sand);font-weight:500}
+
+.run{background:var(--surface);border:1px solid var(--rule);border-left:3px solid var(--sand);border-radius:0 4px 4px 0;padding:20px 22px;margin:0 0 32px}
+.run h3{font-family:var(--serif);font-size:1.1rem;font-weight:700;margin:0 0 10px}
+.run p{margin:0 0 8px;font-size:.94rem}
+.run p:last-child{margin-bottom:0}
+pre{background:var(--surface-2);border-radius:3px;padding:12px 14px;overflow-x:auto;margin:10px 0;font-family:var(--mono);font-size:.85rem;line-height:1.7}
+
+h2{font-family:var(--serif);font-weight:900;font-size:1.3rem;margin:38px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--rule)}
+p{margin:0 0 14px}
+ul{margin:0 0 16px;padding-left:1.2em}
+li{margin-bottom:7px}
+table{border-collapse:collapse;width:100%;font-size:.92rem;margin:0 0 18px}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--rule);vertical-align:top}
+th{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);background:var(--surface-2)}
+code{font-family:var(--mono);font-size:.86em;background:var(--surface-2);padding:2px 6px;border-radius:2px}
+kbd{font-family:var(--mono);font-size:.82em;background:var(--surface);border:1px solid var(--rule-2);border-bottom-width:2px;border-radius:3px;padding:1px 6px}
+.note{background:var(--gold-soft);border-left:3px solid var(--gold);padding:16px 18px;border-radius:0 3px 3px 0;margin:20px 0;font-size:.92rem}
+.meta{background:var(--surface);border:1px solid var(--rule);border-radius:4px;padding:18px 20px;margin:0 0 28px;font-size:.94rem}
+.meta div{display:flex;gap:12px;padding:4px 0}
+.meta span:first-child{color:var(--ink-3);min-width:5.5em;flex:none}
+.shots{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:0 0 18px}
+@media (max-width:620px){.shots{grid-template-columns:1fr}}
+.shots img{width:100%;height:auto;border:1px solid var(--rule-2);border-radius:3px;display:block}
+footer{margin-top:48px;padding-top:20px;border-top:1px solid var(--rule);font-size:.85rem;color:var(--ink-3)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>附加题 · 坦克大战</h1>
+<p class="sub">RST 竞赛训练营入营筛选赛 ｜ 提交人 <b>伍梓侨（WZQ）</b></p>
+
+<div class="meta">
+  <div><span>学校专业</span><span>新疆大学 · 机械设计制造及其自动化 · 2026 级</span></div>
+  <div><span>邮箱</span><span>411264013@qq.com</span></div>
+  <div><span>源码仓库</span><span><a href="https://github.com/huasang457-boop/rst-contest">github.com/huasang457-boop/rst-contest</a></span></div>
+</div>
+
+<figure>
+  <img src="tank-game/screenshots/demo.gif" alt="坦克大战演示动画" width="457" height="312">
+  <figcaption>
+    实机演示（9 秒循环）。由游戏自带的 <code>--demo</code> 自动演示模式录制，非手动剪辑。
+    战场正中央的金色砖墙拼出 <b>WZQ</b>，背景是程序化绘制的校园黄昏场景。
+  </figcaption>
+</figure>
+
+<div class="run">
+  <h3>怎么运行</h3>
+  <p style="color:var(--ink-2);font-size:.9rem;margin-bottom:12px">
+    需要电脑上已安装 <b>Python 3.8+</b>。启动脚本会自动检测并安装 pygame 依赖，
+    但不会自动安装 Python 本身——若未安装，脚本会给出提示并退出。
+    <b>不方便配置环境的话，上方的演示动画与下方的截图已能完整反映游戏内容。</b>
+  </p>
+  <p><b>方式 1（推荐）</b>：双击 <code>tank-game/运行游戏.bat</code>，脚本会自动检测环境并安装依赖后启动。</p>
+  <p><b>方式 2</b>：命令行</p>
+  <pre>cd tank-game
+pip install -r requirements.txt
+python main.py</pre>
+  <p style="color:var(--ink-3);font-size:.88rem">环境要求：Python 3.8+、pygame 2.x。开发测试环境为 Python 3.12 + pygame 2.6.1。</p>
+</div>
+
+<h2>操作</h2>
+<table>
+  <tr><th>按键</th><th>功能</th></tr>
+  <tr><td><kbd>W</kbd> <kbd>A</kbd> <kbd>S</kbd> <kbd>D</kbd> 或方向键</td><td>移动</td></tr>
+  <tr><td><kbd>空格</kbd> 或 <kbd>J</kbd></td><td>开炮（可按住连发，受装弹时间与同屏弹数限制）</td></tr>
+  <tr><td><kbd>P</kbd></td><td>暂停 / 继续</td></tr>
+  <tr><td><kbd>R</kbd></td><td>重新开始</td></tr>
+  <tr><td><kbd>F1</kbd></td><td>保存当前画面截图</td></tr>
+  <tr><td><kbd>ESC</kbd></td><td>暂停 / 退出</td></tr>
+</table>
+
+<h2>玩法</h2>
+<p>歼灭全部 12 辆敌方坦克，同时守住底部基地。3 条命，基地被摧毁也算失败。</p>
+<ul>
+  <li><b>金色砖墙</b>（拼成 WZQ 字样的那些）经过加固，需连续命中 3 次才会塌，中途显示裂纹</li>
+  <li><b>水面</b>坦克过不去，但炮弹可以飞过——能隔水对射</li>
+  <li><b>树林</b>坦克可从下方穿过，绘制在最上层，适合埋伏</li>
+  <li>敌人分三种：普通兵 100 分、快速兵 200 分、装甲兵（3 血）300 分</li>
+</ul>
+
+<h2>赛题加分点对照</h2>
+
+<h3 style="font-size:1rem;font-weight:500;margin:22px 0 8px">1. 底图与场景设计</h3>
+<p><code>game/background.py</code> 程序化绘制的「浩源 · 浪尖儿大学生社区」校园黄昏场景，由远及近包含：黄昏渐变天空、夕阳光晕、两层远山、教学楼群剪影（带随机亮灯窗户）、校名灯箱横幅、校道与行道树、操场跑道与分道线、草坪 WZQ 水印，最后叠一层压暗以保证游戏元素可读性。<b>原创，无第三方素材。</b></p>
+
+<h3 style="font-size:1rem;font-weight:500;margin:22px 0 8px">2. 身份标识（三重）</h3>
+<ul>
+  <li><b>地图布局</b>：战场正中央由砖墙拼出 W Z Q，用金色砖块与普通砖墙区分。字母点阵定义在 <code>game/level.py</code> 的 <code>LETTER_BITMAPS</code>（6×8 点阵），由 <code>_place_initials()</code> 逐点写入地图网格</li>
+  <li><b>界面标识</b>：右侧信息栏顶部 WZQ 徽标、实时「缩写砖墙完好度」进度条、开始界面 WZQ 砖墙缩略图、基地旗帜 W 徽标</li>
+  <li><b>底图水印</b>：校园草坪上的 WZQ 大字水印</li>
+</ul>
+
+<h3 style="font-size:1rem;font-weight:500;margin:22px 0 8px">3. 原创性</h3>
+<p>全部美术与音效均由代码生成，项目内<b>不含任何第三方图片或音频文件</b>。砖块、钢板、水面、树林、坦克、爆炸全部用 <code>pygame.draw</code> 现画并缓存；音效用 <code>array</code> 合成 16 位 PCM 波形交给 <code>pygame.mixer</code> 播放。没有声卡的环境会自动降级为静音，不影响运行。</p>
+
+<h2>游戏截图</h2>
+<div class="shots">
+  <img src="tank-game/screenshots/01_menu.png" alt="开始界面">
+  <img src="tank-game/screenshots/03_battle.png" alt="战斗中">
+  <img src="tank-game/screenshots/02_gameplay.png" alt="游戏画面">
+  <img src="tank-game/screenshots/04_win.png" alt="胜利结算">
+</div>
+
+<h2>代码结构</h2>
+<table>
+  <tr><th>文件</th><th>职责</th></tr>
+  <tr><td><code>main.py</code></td><td>程序入口，命令行参数、自动演示模式</td></tr>
+  <tr><td><code>game/settings.py</code></td><td>全局常量与配色，所有可调数值集中于此</td></tr>
+  <tr><td><code>game/audio.py</code></td><td>程序合成音效，不依赖音频文件</td></tr>
+  <tr><td><code>game/assets.py</code></td><td>字体与程序化贴图，不依赖图片文件</td></tr>
+  <tr><td><code>game/background.py</code></td><td>原创校园底图绘制</td></tr>
+  <tr><td><code>game/level.py</code></td><td>地图生成（含 WZQ 布局）、地形碰撞与绘制</td></tr>
+  <tr><td><code>game/entities.py</code></td><td>坦克、子弹、爆炸、飘字</td></tr>
+  <tr><td><code>game/hud.py</code></td><td>右侧信息栏与菜单 / 暂停 / 胜负界面</td></tr>
+  <tr><td><code>game/core.py</code></td><td>状态机、主循环、碰撞与胜负判定</td></tr>
+</table>
+<p style="font-size:.9rem;color:var(--ink-2)">共 2127 行，更详细的实现要点见 <code>tank-game/README.md</code>。</p>
+
+<div class="note">
+  <p style="margin:0 0 8px"><b>关于 AI 工具的使用</b></p>
+  <p style="margin:0">赛题原文写明「推荐使用 KIMI、Deepseek、CodeX 等 AI 工具辅助完成」，并说明「大学竞赛更看重的是工程实践，做出东西的能力」。据此如实说明：本项目的代码实现由 AI 编程工具完成，我的工作是定义玩法目标与全部约束条件（原创校园底图、中央砖墙拼出姓名缩写、禁用一切第三方素材），并负责运行验收、演示录制与交付打包，<b>不主张对具体算法实现的作者身份</b>。作品为本人独立完成，未抄袭他人作品，未套用现成模板。</p>
+</div>
+
+<footer>
+  伍梓侨（WZQ）· 新疆大学 · 2026 年 8 月
+</footer>
+
+</div>
+</body>
+</html>
