@@ -2,9 +2,10 @@
    伍梓侨 · 个人简历 v2 · 样式表
    ------------------------------------------------------------
    视觉方向：暗场电影感
-     近黑底色 + 实时水波 + 胡杨金点缀 + 等宽字体的「控制台」细节
+     近黑底色 + 实时水波 + 胡杨金点缀 + 等宽字体的「控制台」细节，
+     服务卡背景是三幅会动的水墨画
    约束：零外部依赖（无字体 CDN / 图标库 / CSS 框架）。
-         首屏标题与背景巨字的字形已内联为 SVG 路径，
+         首屏标题、背景巨字和服务卡题字的字形已内联为 SVG 路径，
          访客电脑没装对应字体也能正确显示，双击 index.html 即可打开。
 
    目录
@@ -472,7 +473,11 @@ main { position: relative; margin-left: var(--rail); }
 }
 .work:focus-visible { outline: 1px solid var(--amber); outline-offset: 6px; }
 
-/* 卡片背景：纯 CSS + SVG 绘制的戈壁风景（黄昏 / 入夜），无图片素材 */
+/* 卡片背景：三幅水墨动画（01 远山云海 / 02 寒江孤舟 / 03 荷塘蜻蜓）
+   笔墨是 assets/ink/ 里的透明 SVG 图层（由开发期的 Python 脚本程序化生成），
+   云雾、水纹、飞鸟、渔舟、蜻蜓是 CSS 动画，只动 transform / opacity，交给 GPU 合成。
+   所有图层叠在 400×600 的「画台」.ink 上，画台按 cover 方式铺满卡片；
+   动画元素用画台的百分比定位，卡片比例怎么变都和画面对得上。 */
 .work-clip {
   position: absolute; inset: 0; overflow: hidden; border-radius: inherit;
   border: 1px solid var(--line-2); transition: border-color .5s;
@@ -480,70 +485,161 @@ main { position: relative; margin-left: var(--rail); }
 .work.is-hover .work-clip { border-color: rgba(242, 165, 65, .42); }
 .work-art {
   position: absolute; inset: -3%;
-  filter: brightness(.7) saturate(.8);
+  container-type: size;             /* 画台用 cqw / cqh 计算 cover 尺寸 */
+  background: #0b0a09;
+  background: linear-gradient(to bottom, #0b0a09 0%, #100f0d 42%, #2e2a24 47%, #8b8373 53%, #bfb6a3 60%,
+      #c3baa7 70%, #a39a88 80%, #3f3a32 90%, #0c0b0a 100%) center / 100% 120% no-repeat;   /* 横版卡片里画台两侧接续的宣纸 */
+  filter: brightness(.8);
   transition: transform 1.6s var(--ease), filter 1s ease;
 }
 .work.is-hover .work-art { transform: scale(1.05); filter: none; }
-.art-sky, .art-stars { position: absolute; inset: 0; }
-.art-sun { position: absolute; border-radius: 50%; translate: calc(var(--ax, 0) * -14px) calc(var(--ay, 0) * -8px); transition: translate .6s var(--ease); }
-.art-dunes { position: absolute; left: 0; bottom: 0; width: 100%; height: 52%; overflow: visible; }
-.art-dunes path { transition: transform .9s var(--ease); }
-.art-dunes .d3 { transform: translateX(calc(var(--ax, 0) * -6px)); }
-.art-dunes .d2 { transform: translateX(calc(var(--ax, 0) * -12px)); }
-.art-dunes .d1 { transform: translateX(calc(var(--ax, 0) * -22px)); }
-.art-dunes .d3, .art-dunes .d2 { stroke-width: 1; vector-effect: non-scaling-stroke; }
 
-.art-dusk .art-sky {
-  background: linear-gradient(to bottom,
-    #060709 0%, #0f0e12 26%, #271a14 45%, #6e3e1d 58%, #d0833b 66%, #f3b563 68.5%, #3a2415 73%);
+.ink {
+  position: absolute; left: 50%; top: 50%;
+  width: 100%; width: max(100cqw, 66.667cqh);
+  aspect-ratio: 2 / 3;
+  transform: translate(-50%, -50%);
+  /* 宣纸：上半截压暗给文字让路，中段是被云雾映亮的留白 */
+  background:
+    radial-gradient(62% 16% at 46% 61%, rgba(236, 229, 213, .5), rgba(236, 229, 213, 0)),
+    linear-gradient(to bottom, #0b0a09 0%, #100f0d 42%, #2e2a24 47%, #8b8373 53%, #bfb6a3 60%,
+      #c3baa7 70%, #a39a88 80%, #3f3a32 90%, #0c0b0a 100%);
 }
-.art-dusk .art-sun {
-  left: 59%; top: 66%; width: 30%; aspect-ratio: 1; margin: -15% 0 0 -15%;
-  background: radial-gradient(circle, #fff3d6 0 14%, #ffc774 30%, rgba(242, 165, 65, .35) 50%, transparent 70%);
+/* 横版卡片（两列布局里横跨整行的第三张）：不把画拉满，免得主体被裁掉；
+   画台高度取卡片的 1.2 倍、居中，两侧淡出，接上 .work-art 同样位置的宣纸渐变，像一幅手卷 */
+@container (orientation: landscape) {
+  .ink {
+    width: 80cqh;
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 16%, #000 84%, transparent);
+            mask-image: linear-gradient(90deg, transparent, #000 16%, #000 84%, transparent);
+  }
 }
-.art-dusk .d3 { fill: #4b2e19; stroke: rgba(255, 196, 120, .22); }
-.art-dusk .d2 { fill: #22160d; stroke: rgba(255, 196, 120, .12); }
-.art-dusk .d1 { fill: #0b0806; }
+.ink > * { position: absolute; }
+.ink-l { left: 0; top: 0; width: 100%; height: 100%; transition: translate .9s var(--ease); }
+/* 视差：远景动得少、近景动得多（--ax / --ay 由 script.js 按鼠标位置写入） */
+.ink-d1 { translate: calc(var(--ax, 0) * -4px) calc(var(--ay, 0) * -2px); }
+.ink-d2 { translate: calc(var(--ax, 0) * -9px) calc(var(--ay, 0) * -4px); }
+.ink-d3 { translate: calc(var(--ax, 0) * -16px) calc(var(--ay, 0) * -6px); }
 
-.art-night .art-sky {
-  background: linear-gradient(to bottom,
-    #040509 0%, #070b14 28%, #0f1a2c 50%, #273a56 62%, #a8733f 67%, #1c1a1c 71%);
+/* 云雾：几团宣纸色的柔光，来回缓慢漂移 */
+.ink-mist {
+  left: -50%; width: 200%;
+  background:
+    radial-gradient(18% 50% at 16% 55%, rgba(230, 223, 207, .8), rgba(230, 223, 207, 0)),
+    radial-gradient(26% 42% at 47% 45%, rgba(230, 223, 207, .62), rgba(230, 223, 207, 0)),
+    radial-gradient(20% 50% at 80% 58%, rgba(230, 223, 207, .74), rgba(230, 223, 207, 0));
+  animation: ink-drift 48s ease-in-out infinite alternate;
 }
-.art-night .art-stars {
-  top: 30%; bottom: 40%;
-  background-image:
-    radial-gradient(1px 1px at 8% 12%, #fff, transparent),
-    radial-gradient(1px 1px at 22% 30%, rgba(255, 255, 255, .7), transparent),
-    radial-gradient(1.5px 1.5px at 41% 9%, #fff, transparent),
-    radial-gradient(1px 1px at 57% 24%, rgba(255, 255, 255, .8), transparent),
-    radial-gradient(1px 1px at 69% 6%, rgba(255, 255, 255, .6), transparent),
-    radial-gradient(1.5px 1.5px at 83% 18%, #fff, transparent),
-    radial-gradient(1px 1px at 93% 35%, rgba(255, 255, 255, .7), transparent),
-    radial-gradient(1px 1px at 34% 44%, rgba(255, 255, 255, .5), transparent),
-    radial-gradient(1px 1px at 76% 46%, rgba(255, 255, 255, .5), transparent);
-  animation: twinkle 3.6s ease-in-out infinite alternate;
-}
-@keyframes twinkle { from { opacity: .45; } to { opacity: .95; } }
-.art-night .art-sun {
-  left: 24%; top: 45%; width: 9%; aspect-ratio: 1;
-  background: radial-gradient(circle at 42% 40%, #fbf5e6 0 46%, rgba(251, 245, 230, .2) 62%, transparent 72%);
-  box-shadow: 0 0 44px 8px rgba(190, 212, 255, .10);
-}
-.art-night .d3 { fill: #1a2030; stroke: rgba(170, 196, 240, .16); }
-.art-night .d2 { fill: #0e1219; stroke: rgba(170, 196, 240, .08); }
-.art-night .d1 { fill: #06070a; }
+@keyframes ink-drift { from { transform: translateX(-11%); } to { transform: translateX(11%); } }
+.ink-shan .ink-m1 { top: 54%; height: 13%; opacity: .75; animation-duration: 56s; }
+.ink-shan .ink-m2 { top: 66%; height: 16%; animation-duration: 42s; animation-direction: alternate-reverse; }
+.ink-shan .ink-m3 { top: 80%; height: 12%; opacity: .8; animation-duration: 50s; }
+.ink-shui .ink-m1 { top: 62.5%; height: 7%; opacity: .6; animation-duration: 60s; }
+.ink-he .ink-m1 { top: 61%; height: 9%; opacity: .55; animation-duration: 54s; }
 
-.art-dawn .art-sky {
-  background: linear-gradient(to bottom,
-    #07060c 0%, #130d1b 28%, #2a1730 46%, #6a2d49 58%, #d0657a 66%, #f2a48b 68.5%, #2a1620 73%);
+/* 飞鸟 / 蜻蜓：外层与画台同尺寸，translate 的百分比就是画台坐标 */
+.ink-fly { left: 0; top: 0; width: 100%; height: 100%; pointer-events: none; }
+.ink-fly svg { position: absolute; overflow: visible; }
+/* 鸟群从画面中部的云雾里现身，往左飞出画外，不经过右侧的题字 */
+.ink-birds { transform: translate(40%, 52%); animation: ink-birds 34s linear infinite; }
+.ink-birds svg { left: 0; top: 0; width: 13%; fill: #15130f; fill-opacity: .8; }
+@keyframes ink-birds {
+  from       { transform: translate(58%, 54%); opacity: 0; }
+  6%         { opacity: 1; }
+  56%        { transform: translate(-16%, 48.5%); opacity: 1; }
+  56.1%, to  { transform: translate(-16%, 48.5%); opacity: 0; }
 }
-.art-dawn .art-sun {
-  left: 30%; top: 66%; width: 28%; aspect-ratio: 1; margin: -14% 0 0 -14%;
-  background: radial-gradient(circle, #ffeade 0 14%, #ffa08e 30%, rgba(254, 110, 120, .32) 50%, transparent 70%);
+.ink-wing { transform-box: fill-box; transform-origin: 50% 70%; animation: ink-flap .55s ease-in-out infinite alternate; }
+.ink-wing:nth-child(2) { animation-duration: .5s; animation-delay: -.2s; }
+.ink-wing:nth-child(3) { animation-duration: .6s; animation-delay: -.35s; }
+@keyframes ink-flap { to { transform: scaleY(-.45); } }
+
+/* 水纹：每行是一条横向平铺的笔触带，宽度内正好铺偶数块，平移 -50% 后无缝衔接；
+   月亮正下方用遮罩留出一道亮带，当作月影 */
+.ink-water {
+  left: 0; top: 0; width: 100%; height: 100%;
+  -webkit-mask-image: linear-gradient(90deg, #000 19%, transparent 24%, transparent 30%, #000 35%);
+          mask-image: linear-gradient(90deg, #000 19%, transparent 24%, transparent 30%, #000 35%);
 }
-.art-dawn .d3 { fill: #3c1d2b; stroke: rgba(255, 176, 164, .2); }
-.art-dawn .d2 { fill: #1f1018; stroke: rgba(255, 176, 164, .1); }
-.art-dawn .d1 { fill: #0b0609; }
+.ink-water i {
+  position: absolute; left: calc(var(--f) * -12%); width: 230%;
+  top: calc(var(--y) * 1%); height: calc(var(--h) * 1%);
+  background: url(assets/ink/wave-a.svg) 0 0 / calc(100% / var(--n)) 100% repeat-x;
+  opacity: var(--o);
+  animation: ink-flow var(--t) linear infinite;
+}
+.ink-water i.b { background-image: url(assets/ink/wave-b.svg); }
+@keyframes ink-flow { to { transform: translateX(-50%); } }
+.ink-boat { left: 34%; top: 58.5%; width: 36%; transform-origin: 50% 70%; animation: ink-bob 6s ease-in-out infinite alternate; }
+@keyframes ink-bob { from { transform: translateY(-2%) rotate(-1.4deg); } to { transform: translateY(3%) rotate(1.2deg); } }
+.ink-ring, .ink-dip {
+  border: 1px solid rgba(20, 18, 15, .45); border-radius: 50%;
+  opacity: 0; transform: translate(-50%, -50%);
+}
+.ink-ring { left: 50%; top: 66.8%; width: 34%; aspect-ratio: 5 / 1; animation: ink-ring 6s ease-out infinite; }
+.ink-ring2 { animation-delay: -3s; }
+@keyframes ink-ring {
+  from { opacity: .8; transform: translate(-50%, -50%) scale(.35); }
+  to   { opacity: 0;  transform: translate(-50%, -50%) scale(1.25); }
+}
+.ink-reeds { transform-origin: 88% 100%; animation: ink-sway 7s ease-in-out infinite alternate; }
+@keyframes ink-sway { from { transform: rotate(-.9deg); } to { transform: rotate(1.1deg); } }
+
+/* 荷塘：花枝轻摆；蜻蜓飞进来点一下水，再停到花苞尖上，歇一会儿飞走 */
+.ink-he .ink-sway { transform-origin: 30% 100%; animation: ink-sway 8s ease-in-out infinite alternate; }
+.ink-dip { left: 61.5%; top: 75.5%; width: 17%; aspect-ratio: 4 / 1; animation: ink-dip 18s linear infinite; }
+.ink-dip2 { animation-delay: .7s; }
+@keyframes ink-dip {
+  0%, 27.5% { opacity: 0;  transform: translate(-50%, -50%) scale(.15); }
+  28%       { opacity: .9; transform: translate(-50%, -50%) scale(.15); animation-timing-function: cubic-bezier(.2, .6, .3, 1); }
+  42%, to   { opacity: 0;  transform: translate(-50%, -50%) scale(1.5); }
+}
+.ink-dragonfly { transform: translate(23%, 56.4%); animation: ink-dragonfly 18s ease-in-out infinite; }
+.ink-dragonfly svg { left: -6%; top: -2.7%; width: 12%; fill: #15130f; }
+.ink-wings {
+  fill: rgba(239, 232, 218, .38); stroke: rgba(21, 19, 15, .6); stroke-width: .45;
+  transform-box: fill-box; transform-origin: 50% 50%;
+  animation: ink-flutter .09s linear infinite alternate;
+}
+@keyframes ink-flutter { to { transform: scaleY(.72); } }
+@keyframes ink-dragonfly {
+  0%       { transform: translate(108%, 50%); }
+  10%      { transform: translate(80%, 56%); }
+  18%, 23% { transform: translate(65%, 62%); }
+  28%      { transform: translate(61.5%, 75%); }
+  32%      { transform: translate(59%, 66%); }
+  41%      { transform: translate(38%, 58%); }
+  48%, 72% { transform: translate(23%, 56.4%); }
+  82%      { transform: translate(8%, 48%); }
+  90%, to  { transform: translate(-14%, 41%); }
+}
+
+/* 留白处的行楷题字「可轻触」，钤一方「伍」字印 */
+.ink-defs { position: absolute; width: 0; height: 0; overflow: hidden; }
+.ink-poem {
+  position: absolute; right: 9%; top: 49%;
+  display: flex; flex-direction: column; align-items: center;
+  width: 30px; width: clamp(26px, 10cqw, 42px);
+  transition: opacity .4s ease;
+}
+.ink-poem::before {  /* 题字背后衬一团淡淡的纸色，压住水纹和远景，保证字清楚 */
+  content: ""; position: absolute; left: 50%; top: 48%; z-index: -1;
+  width: 280%; height: 150%; transform: translate(-50%, -50%);
+  background: radial-gradient(closest-side, rgba(226, 219, 203, .6), rgba(226, 219, 203, 0));
+}
+.ink-ch { width: 100%; height: auto; aspect-ratio: 900 / 920; margin-bottom: -10%; fill: #15120f; }
+.ink-seal { width: 54%; height: auto; margin-top: 30%; }
+.work.is-hover .ink-poem { opacity: 0; }
+
+/* 触点涟漪：触屏轻触卡片时，从手指位置荡开一圈（script.js 第 6 节） */
+.ink-drop {
+  position: absolute; z-index: 3; width: 120px; height: 120px; margin: -60px 0 0 -60px;
+  border-radius: 50%; pointer-events: none;
+  border: 1px solid rgba(236, 229, 213, .75);
+  box-shadow: 0 0 0 1px rgba(13, 12, 11, .22), inset 0 0 18px rgba(236, 229, 213, .22);
+  animation: ink-drop .9s var(--ease) forwards;
+}
+@keyframes ink-drop { from { opacity: 1; transform: scale(.1); } to { opacity: 0; transform: scale(1); } }
 
 /* 上下压暗，保证文字可读 */
 .work-shade {
@@ -653,9 +749,6 @@ main { position: relative; margin-left: var(--rail); }
   50%, 62% { transform: translateY(-25%); animation-timing-function: cubic-bezier(.65, 0, .35, 1); }
   100%     { transform: translateY(-50%); }
 }
-
-/* 触屏提示：没有悬停的设备上才显示 */
-.work-tap { display: none; }
 
 /* ---------- 11. 06 关于 ---------- */
 .statement {
@@ -886,6 +979,17 @@ html.lb-open { overflow: hidden; }
 .js .gl-q path { transition-delay: .6s; }
 .js .ghost.is-on .gl path { stroke-dashoffset: 0; }
 
+/* 服务卡题字：卡片浮现后，三个字依次自上而下写出，最后盖上印章 */
+.js .ink-ch { clip-path: inset(0 0 100% 0); transition: clip-path 1s cubic-bezier(.6, 0, .3, 1); }
+.js .ink-ch:nth-child(1) { transition-delay: calc(var(--d, 0) * 1ms + .9s); }
+.js .ink-ch:nth-child(2) { transition-delay: calc(var(--d, 0) * 1ms + 1.35s); }
+.js .ink-ch:nth-child(3) { transition-delay: calc(var(--d, 0) * 1ms + 1.8s); }
+.js .work.is-in .ink-ch { clip-path: inset(0 0 -8% 0); }
+.js .ink-seal { opacity: 0; transform: scale(1.8); transition: opacity .2s ease, transform .5s var(--ease); transition-delay: calc(var(--d, 0) * 1ms + 2.7s); }
+.js .work.is-in .ink-seal { opacity: 1; transform: none; }
+/* 卡片不在视口内时暂停水墨动画，省电（is-live 由 script.js 切换） */
+.js .work:not(.is-live) .ink * { animation-play-state: paused; }
+
 /* 导航轨与状态卡在首屏动画之后滑入 */
 .js .rail { transform: translateX(-100%); transition: transform 1.2s var(--ease) .5s; }
 .js .chip { opacity: 0; transform: translateY(18px); transition: opacity .8s ease 2s, transform 1s var(--ease) 2s, border-color .3s; }
@@ -991,15 +1095,10 @@ html.lb-open { overflow: hidden; }
 /* 没有悬停能力的设备（手机、平板）：轻触卡片切换预览 */
 @media (hover: none) {
   .hud-bl { display: none; }
-  .work-tap {
-    display: block; position: absolute; left: 50%; top: 60%; z-index: 4;
-    transform: translate(-50%, -50%);
-    padding: 6px 16px; border-radius: 999px;
-    font-family: var(--mono); font-size: 11px; letter-spacing: .16em; white-space: nowrap;
-    color: var(--ink); background: rgba(6, 7, 8, .7); border: 1px solid var(--line-2);
-    transition: opacity .3s;
-  }
-  .work.is-hover .work-tap { opacity: 0; }
+  /* 手机上没有「悬停点亮」，画面直接用全亮度；印章隔几秒轻轻一跳，提醒可以轻触 */
+  .work-art { filter: none; }
+  .js .work.is-in:not(.is-hover) .ink-seal { animation: ink-nudge 3.2s ease-in-out 3s infinite; }
+  @keyframes ink-nudge { 0%, 70%, 100% { transform: none; } 80% { transform: scale(1.22) rotate(-6deg); } 90% { transform: scale(.96); } }
   .work-preview { transform: translate(-50%, -50%) rotate(-3deg) scale(.94); transition: opacity .45s var(--ease), filter .6s var(--ease), transform .6s var(--ease); }
   .work:not(.is-hover) .work-preview { transform: translate(-50%, -50%) rotate(0deg) scale(.8); }
 }
@@ -1018,6 +1117,9 @@ html.lb-open { overflow: hidden; }
   .js .t-bracket, .js .chip { opacity: 1; transform: none; }
   .js .statement .ch { opacity: 1; }
   .js .mini-skills li { opacity: 1; transform: none; }
+  .ink *, .ink-seal { animation: none !important; }
+  .js .ink-ch { clip-path: none; }
+  .js .ink-seal { opacity: 1; transform: none; }
 }
 
 /* ---------- 17. 打印：浅色、去掉装饰层，可直接另存为 PDF ---------- */
@@ -1031,7 +1133,7 @@ html.lb-open { overflow: hidden; }
   html, body { background: #fff; color: #111; }
   body { font-size: 10.5pt; line-height: 1.6; }
   .water, .bg-fallback, .veil, .ghost, .guides, .rail, .topbar, .menu, .chip, .toast, .cursor, .skip,
-  .scroll-cue, .hero-hud, .t-bracket, .work-clip, .work-preview, .work-tap, .marquee,
+  .scroll-cue, .hero-hud, .t-bracket, .work-clip, .work-preview, .marquee,
   .hex, .hex-hint, .crow-state, .crow-go, .caret, .work-open, .lightbox { display: none !important; }
   main, .footer { margin-left: 0; }
   .js [data-reveal], .js [data-intro], .js .statement .ch, .js .mini-skills li { opacity: 1 !important; transform: none !important; }

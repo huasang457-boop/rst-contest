@@ -424,7 +424,18 @@
     });
   });
 
-  $$('.work').forEach((card) => {
+  // 卡片背景的水墨动画只在进入视口时播放，滚走就暂停（CSS 里按 is-live 切换）
+  const works = $$('.work');
+  if ('IntersectionObserver' in window) {
+    const liveIO = new IntersectionObserver((entries) => {
+      entries.forEach((e) => e.target.classList.toggle('is-live', e.isIntersecting));
+    }, { rootMargin: '80px 0px' });
+    works.forEach((card) => liveIO.observe(card));
+  } else {
+    works.forEach((card) => card.classList.add('is-live'));
+  }
+
+  works.forEach((card) => {
     const preview = $('.work-preview', card);
     if (!preview) return;
 
@@ -454,12 +465,23 @@
       });
     }
 
+    // 触屏轻触卡片时，从手指位置荡开一圈水墨涟漪（鼠标有自定义光标的反馈，这里不重复）
+    const clip = $('.work-clip', card);
+    if (clip && !reduceMotion) {
+      card.addEventListener('pointerdown', (e) => {
+        if (e.pointerType === 'mouse' || e.target.closest('a, button')) return;
+        const r = card.getBoundingClientRect();
+        const drop = document.createElement('i');
+        drop.className = 'ink-drop';
+        drop.style.left = `${(e.clientX - r.left).toFixed(0)}px`;
+        drop.style.top = `${(e.clientY - r.top).toFixed(0)}px`;
+        drop.addEventListener('animationend', () => drop.remove(), { once: true });
+        clip.appendChild(drop);
+      }, { passive: true });
+    }
+
+    // 触屏设备：卡片画面留白处题有「可轻触」，轻触切换预览
     if (!canHover) {
-      const tip = document.createElement('span');
-      tip.className = 'work-tap';
-      tip.setAttribute('aria-hidden', 'true');
-      tip.textContent = 'TAP TO VIEW · 轻触查看';
-      card.appendChild(tip);
       card.addEventListener('click', (e) => {
         if (e.target.closest('a, button')) return;
         card.classList.toggle('is-hover');
