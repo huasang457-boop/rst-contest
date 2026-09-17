@@ -139,6 +139,7 @@
 </section>
 
 <!-- ══════════ 02 服务 ══════════
+     三张服务卡：AI Coding / PPT 优化 / 自制游戏。
      核心交互：鼠标悬停卡片时，作品预览从卡片中浮出，
      跟随鼠标移动并做 3D 倾斜（script.js 第 6 节）。
      触屏设备没有悬停，改为轻触卡片切换预览。 -->
@@ -219,7 +220,7 @@
           <div class="work-foot">
             <!-- 真实链接指向大图：JS 可用时拦截并打开弹窗，JS 失效时仍能直接看图 -->
             <a class="work-open" href="assets/ppt-bytedance-full.webp" data-lightbox-open="lightboxPpt" data-cursor="OPEN">
-              <span>查看作品 · 字节跳动发展史</span>
+              <span>查看完整作品</span>
               <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 11.5l7-7M5.5 4.5h6v6"/></svg>
             </a>
             <div class="marquee" aria-hidden="true"><div class="marquee-track">
@@ -233,6 +234,41 @@
           <div class="pv pv-slide">
             <div class="pv-bar"><i></i><i></i><i></i><span>字节跳动发展史.pptx — 演示设计 01</span></div>
             <img src="assets/ppt-bytedance.webp" alt="" width="1024" height="576" loading="lazy" decoding="async">
+          </div>
+        </div>
+      </article>
+
+      <!-- 服务 03：自制游戏 · 悬停预览：游戏自带自动演示模式录下的 8 秒实机画面（浮现时才播放） -->
+      <article class="work" data-reveal tabindex="0" data-cursor="PLAY" aria-labelledby="s3t" aria-describedby="s3d">
+        <div class="work-clip" aria-hidden="true">
+          <div class="work-art art-dawn">
+            <span class="art-sky"></span>
+            <span class="art-sun"></span>
+            <svg class="art-dunes" viewBox="0 0 400 300" preserveAspectRatio="none">
+              <path class="d3" d="M0,110 C48,96 110,112 168,104 C224,96 270,84 322,98 C356,106 382,112 400,108 L400,300 L0,300 Z"/>
+              <path class="d2" d="M0,162 C62,176 120,150 184,158 C246,166 288,184 344,172 C368,166 388,160 400,162 L400,300 L0,300 Z"/>
+              <path class="d1" d="M0,240 C70,222 128,230 196,238 C268,246 330,222 400,228 L400,300 L0,300 Z"/>
+            </svg>
+          </div>
+          <div class="work-shade"></div>
+        </div>
+
+        <div class="work-content">
+          <div class="work-top"><span class="work-kicker">PLAY × CODE</span><span class="work-no" aria-hidden="true">03</span></div>
+          <h3 id="s3t">自制游戏</h3>
+          <p class="work-desc" id="s3d" data-typewriter>用 Python 和 pygame 做的坦克大战：玩法和关卡布局由我来定，借助 AI 编程工具实现；美术与音效全部由代码生成，中央砖墙拼出我的缩写 WZQ。</p>
+          <div class="work-foot">
+            <div class="marquee" aria-hidden="true"><div class="marquee-track">
+              <span>GAME // PYTHON · PYGAME · 程序化美术 · 合成音效 · WZQ</span>
+              <span>GAME // PYTHON · PYGAME · 程序化美术 · 合成音效 · WZQ</span>
+            </div></div>
+          </div>
+        </div>
+
+        <div class="work-preview" aria-hidden="true">
+          <div class="pv pv-game">
+            <div class="pv-bar"><i></i><i></i><i></i><span>坦克大战 · WZQ — 自动演示</span></div>
+            <video src="assets/game-tank.mp4" poster="assets/game-tank-poster.webp" width="640" height="436" muted loop playsinline preload="none"></video>
           </div>
         </div>
       </article>

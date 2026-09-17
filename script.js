@@ -428,6 +428,16 @@
     const preview = $('.work-preview', card);
     if (!preview) return;
 
+    // 预览里是视频的卡片：浮现时播放、收起时暂停，不在后台白白解码。
+    // 监听 class 变化，悬停、键盘聚焦、触屏轻触三种方式都能统一处理
+    const video = $('video', preview);
+    if (video && !reduceMotion) {
+      new MutationObserver(() => {
+        if (card.classList.contains('is-hover')) video.play().catch(() => {});
+        else video.pause();
+      }).observe(card, { attributes: true, attributeFilter: ['class'] });
+    }
+
     if (card.dataset.lightbox) {
       // 第一次悬停 / 聚焦 / 触摸卡片时就预加载弹窗大图，点开时不用再等
       const warmUp = () => {

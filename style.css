@@ -462,7 +462,8 @@ main { position: relative; margin-left: var(--rail); }
 .js .mini-skills.is-in li { opacity: 1; transform: none; }
 
 /* ---------- 10. 02 服务卡（悬停浮现预览） ---------- */
-.works { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(16px, 2vw, 26px); }
+/* 三张服务卡一排；中等宽度两列、第三张横跨整行；≤1024px 单列（见第 15 节） */
+.works { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(14px, 1.5vw, 22px); }
 .work {
   position: relative;
   display: flex; flex-direction: column;
@@ -532,6 +533,18 @@ main { position: relative; margin-left: var(--rail); }
 .art-night .d2 { fill: #0e1219; stroke: rgba(170, 196, 240, .08); }
 .art-night .d1 { fill: #06070a; }
 
+.art-dawn .art-sky {
+  background: linear-gradient(to bottom,
+    #07060c 0%, #130d1b 28%, #2a1730 46%, #6a2d49 58%, #d0657a 66%, #f2a48b 68.5%, #2a1620 73%);
+}
+.art-dawn .art-sun {
+  left: 30%; top: 66%; width: 28%; aspect-ratio: 1; margin: -14% 0 0 -14%;
+  background: radial-gradient(circle, #ffeade 0 14%, #ffa08e 30%, rgba(254, 110, 120, .32) 50%, transparent 70%);
+}
+.art-dawn .d3 { fill: #3c1d2b; stroke: rgba(255, 176, 164, .2); }
+.art-dawn .d2 { fill: #1f1018; stroke: rgba(255, 176, 164, .1); }
+.art-dawn .d1 { fill: #0b0609; }
+
 /* 上下压暗，保证文字可读 */
 .work-shade {
   position: absolute; inset: 0;
@@ -581,7 +594,7 @@ main { position: relative; margin-left: var(--rail); }
 /* 浮现的预览窗：位置与 3D 倾斜由 JS 每帧写入 transform */
 .work-preview {
   position: absolute; left: 50%; top: 60%; z-index: 5;
-  width: min(90%, 390px);
+  width: min(125%, 390px);   /* 卡片三列时较窄，预览窗允许略宽于卡片，浮在相邻卡片之上 */
   pointer-events: none;
   opacity: 0; filter: blur(10px);
   transform: translate(-50%, -50%) scale(.7);
@@ -608,8 +621,11 @@ main { position: relative; margin-left: var(--rail); }
 .pv-bar span { margin-left: 8px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-family: var(--mono); font-size: 10.5px; color: var(--ink-3); }
 
 /* 幻灯片窗：16:9 的 PPT 渲染图，比网页截图窗再宽一些，保证缩略图里的字看得清 */
-.work-preview:has(.pv-slide) { width: min(100%, 460px); }
+.work-preview:has(.pv-slide) { width: min(135%, 460px); }
 .pv-slide img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; background: #07080d; }
+
+/* 游戏窗：实机录屏，浮现时才播放（script.js 第 6 节） */
+.pv-game video { display: block; width: 100%; height: auto; aspect-ratio: 640 / 436; object-fit: cover; background: #12141c; }
 
 /* 网站截图窗：v1、v2 上下拼成长条，悬停时在同一竖直平面内循环滚动 */
 .pv-shots { position: relative; aspect-ratio: 16 / 10; overflow: hidden; background: #0b0c0e; }
@@ -883,8 +899,16 @@ html.lb-open { overflow: hidden; }
   .work-no { font-size: 48px; }
 }
 
+@media (max-width: 1279px) {
+  .works { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .works .work:nth-child(3) { grid-column: 1 / -1; min-height: 460px; }
+}
+
 @media (max-width: 1024px) {
   .works { grid-template-columns: minmax(0, 1fr); max-width: 520px; }
+  .works .work:nth-child(3) { min-height: 580px; }
+  .work-preview { width: min(94%, 390px); }
+  .work-preview:has(.pv-slide) { width: min(100%, 460px); }
   .projects { grid-template-columns: minmax(0, 1fr); max-width: 560px; }
 }
 
