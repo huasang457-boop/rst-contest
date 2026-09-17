@@ -822,6 +822,7 @@ main { position: relative; margin-left: var(--rail); }
 }
 .crow-go svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
 .crow-go:hover { color: var(--amber); border-color: var(--amber); transform: rotate(45deg); }
+.crow-go.is-blank { visibility: hidden; }   /* 微信、QQ 没有可跳转的链接，留出同宽的位置让 COPY 对齐 */
 
 /* ---------- 13. 页脚 / 状态卡 / 提示 / 大图弹窗 / 光标 ---------- */
 .footer {
@@ -1161,6 +1162,5 @@ html.lb-open { overflow: hidden; }
   .statement { font-size: 13pt; }
   .crow { padding: 8pt 0; }
   .crow-val { font-size: 13pt; }
-  .crows li:has(.crow[data-print]) { display: none; }
   a { color: #111; }
 }

@@ -8,7 +8,7 @@
    5. 文字特效：标题解码、打字机
    6. 服务卡：悬停浮现预览（跟随鼠标的 3D 倾斜）+ 作品大图弹窗
    7. 项目卡聚光 / 首屏标题景深
-   8. 联系区：十六进制矩阵 + 点击解码复制 + 打印
+   8. 联系区：十六进制矩阵 + 点击解码复制
    9. 杂项：时钟、移动端菜单、启动
    零依赖，原生 JavaScript。水波背景见 water.js。
    ============================================================ */
@@ -702,20 +702,21 @@
     toastTimer = setTimeout(() => toast.classList.remove('is-on'), 2600);
   }
 
+  // 每行的真实内容：一般直接写在 data-copy 里；微信号只以 Base64 存在 data-copy-b64，用到时才解出来
+  const realValue = (btn) => btn.dataset.copy || (btn.dataset.copyB64 ? atob(btn.dataset.copyB64) : '');
+
   $$('.crow').forEach((btn) => {
-    if (btn.hasAttribute('data-print')) {
-      btn.addEventListener('click', () => window.print());
-      return;
-    }
     const value = $('.crow-val', btn);
     const stateEl = $('.crow-state', btn);
-    const real = btn.dataset.copy;
+    const real = realValue(btn);
     if (!value || !real) return;
+    const encoded = !btn.dataset.copy;
 
-    // JS 可用时先遮住，点击后解码；读屏软件直接读到完整内容
+    // JS 可用时先遮住，点击后解码；读屏软件直接读到完整内容。
+    // 微信号不写进 aria-label（会进入渲染后的页面，能被执行 JS 的爬虫读到），点击后由提示条播报
     if (value.dataset.mask) value.textContent = value.dataset.mask;
     const key = $('.crow-key', btn).textContent.replace('//', '').trim();
-    btn.setAttribute('aria-label', `复制 ${key}：${real}`);
+    btn.setAttribute('aria-label', encoded ? `复制 ${key}（点击后显示）` : `复制 ${key}：${real}`);
 
     let resetTimer = 0;
     btn.addEventListener('click', async (e) => {
@@ -729,15 +730,19 @@
       const ok = await copyText(real);
       btn.classList.add('is-done');
       stateEl.textContent = ok ? 'COPIED ✓' : 'SELECT';
-      showToast(ok ? `已复制到剪贴板：${real}` : `浏览器不允许自动复制，请手动选择：${real}`);
+      const done = (btn.dataset.toast || '已复制到剪贴板：{v}').replace('{v}', real);
+      showToast(ok ? done : `浏览器不允许自动复制，请手动选择：${real}`);
       clearTimeout(resetTimer);
       resetTimer = setTimeout(() => { stateEl.textContent = 'COPY'; btn.classList.remove('is-done'); }, 2800);
     });
   });
 
-  // 打印 / 另存 PDF 前：显示真实联系方式，补完正在打字的文本
+  // 访客自己用浏览器打印 / 另存 PDF 时：显示真实联系方式，补完正在打字的文本
   addEventListener('beforeprint', () => {
-    $$('.crow[data-copy]').forEach((btn) => { $('.crow-val', btn).textContent = btn.dataset.copy; });
+    $$('.crow').forEach((btn) => {
+      const v = realValue(btn);
+      if (v) $('.crow-val', btn).textContent = v;
+    });
     typers.forEach((job) => finishTyping(job));
   });
 

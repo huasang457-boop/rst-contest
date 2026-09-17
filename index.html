@@ -456,7 +456,8 @@
 
 <!-- ══════════ 07 联系 ══════════
      JS 可用时，联系方式先被遮住，点击后「解码」显示并复制到剪贴板；
-     JS 不可用时直接显示原文，右侧箭头链接始终可用 -->
+     JS 不可用时直接显示原文，右侧箭头链接始终可用。
+     微信号例外：源码里只存 Base64，点击时才解出来，避免被爬虫直接从页面源码里抓走 -->
 <section class="sec" id="contact" data-sec="07" data-label="联系">
   <header class="sec-head">
     <span class="sec-no">07</span>
@@ -469,6 +470,22 @@
     <p class="hex-hint"><i aria-hidden="true"></i>CLICK A ROW TO DECODE &amp; COPY<span> · 点击任意一行，解码并复制</span></p>
 
     <ul class="crows">
+      <li>
+        <button class="crow" type="button" data-copy-b64="eWlhbm5hbmFuMTMzOTIyNzYyNTE=" data-toast="已复制微信号：{v}" data-cursor="COPY">
+          <span class="crow-key">// WECHAT</span>
+          <span class="crow-val" data-mask="WeChat [CLICK_TO_REVEAL]">开启 JavaScript 后点击显示</span>
+          <span class="crow-state">COPY</span>
+        </button>
+        <span class="crow-go is-blank" aria-hidden="true"></span>
+      </li>
+      <li>
+        <button class="crow" type="button" data-copy="411264013" data-toast="已复制 QQ 号：{v}" data-cursor="COPY">
+          <span class="crow-key">// QQ</span>
+          <span class="crow-val" data-mask="QQ [CLICK_TO_REVEAL]">411264013</span>
+          <span class="crow-state">COPY</span>
+        </button>
+        <span class="crow-go is-blank" aria-hidden="true"></span>
+      </li>
       <li>
         <button class="crow" type="button" data-copy="411264013@qq.com" data-cursor="COPY">
           <span class="crow-key">// EMAIL</span>
@@ -488,13 +505,6 @@
         <a class="crow-go" href="https://github.com/huasang457-boop" target="_blank" rel="noopener" aria-label="打开 GitHub 主页（新窗口）" data-cursor="OPEN">
           <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 11.5l7-7M5.5 4.5h6v6"/></svg>
         </a>
-      </li>
-      <li>
-        <button class="crow" type="button" data-print data-cursor="PDF">
-          <span class="crow-key">// RESUME</span>
-          <span class="crow-val">Save as PDF [CLICK_TO_PRINT]</span>
-          <span class="crow-state">PRINT</span>
-        </button>
       </li>
     </ul>
   </div>
