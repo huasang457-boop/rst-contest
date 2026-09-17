@@ -4,339 +4,374 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>伍梓侨 · 个人简历</title>
-<meta name="description" content="伍梓侨 —— 新疆大学 2026 级机械设计制造及其自动化专业新生。">
+<meta name="description" content="伍梓侨 —— 新疆大学 2026 级机械设计制造及其自动化 1 班。高考后自学编程，从第一个 C 程序写到第一个上线的作品。">
 <meta name="author" content="伍梓侨">
+<meta name="theme-color" content="#060708">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23060708'/%3E%3Ctext x='16' y='21.5' font-family='Consolas,monospace' font-size='13' font-weight='700' fill='%23f2a541' text-anchor='middle'%3EWZQ%3C/text%3E%3C/svg%3E">
 <link rel="stylesheet" href="style.css">
-<!-- 内联 SVG 图标，无外部图标库依赖；favicon 用 data URI，避免额外请求 -->
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='24'>🏜️</text></svg>">
+<script>
+  /* 在样式生效前打上标记：只有 JS 能运行时，才启用「先隐藏、再入场」的动画。
+     JS 被禁用或加载失败时，页面内容保持完整可读，不会白屏。 */
+  document.documentElement.classList.add('js');
+</script>
 </head>
 <body>
 
-<!-- ══════════ 顶部导航 ══════════
-     桌面端为横向导航条；≤768px 折叠为汉堡菜单（见 script.js） -->
-<header class="site-header" id="siteHeader">
-  <div class="nav-inner">
-    <a class="brand" href="#top" aria-label="返回顶部">
-      <span class="brand-mark">WZQ</span>
-      <span class="brand-name">伍梓侨</span>
-    </a>
+<a class="skip" href="#profile">跳到正文</a>
 
-    <!-- 汉堡按钮：仅移动端可见 -->
-    <button class="nav-toggle" id="navToggle" aria-label="展开导航菜单" aria-expanded="false" aria-controls="navMenu">
-      <span class="bar"></span><span class="bar"></span><span class="bar"></span>
-    </button>
+<!-- ══════════ 背景层 ══════════
+     水波画布（water.js）→ 兜底渐变 → 巨型描边字 WZQ → 版式参考线
+     全部 aria-hidden，纯装饰 -->
+<canvas class="water" id="water" aria-hidden="true"></canvas>
+<div class="bg-fallback" aria-hidden="true"></div>
+<div class="veil" aria-hidden="true"></div>
+<div class="ghost" id="ghost" aria-hidden="true">
+  <svg class="gl gl-w" viewBox="3 123 929 769" focusable="false"><path pathLength="1" d="M150 880 15 135H197L244 475Q252 533 259.5 592Q267 651 274 711H278Q289 651 300 592Q311 533 322 475L398 135H549L626 475Q637 532 647.5 591.5Q658 651 669 711H674Q681 651 688 592Q695 533 702 475L751 135H920L791 880H566L499 556Q490 513 482.5 469Q475 425 470 383H466Q459 425 451.5 469Q444 513 436 556L371 880Z"/></svg>
+  <svg class="gl gl-z" viewBox="27 123 568 769" focusable="false"><path pathLength="1" d="M39 880V772L360 284H70V135H580V243L259 730H583V880Z"/></svg>
+  <svg class="gl gl-q" viewBox="40 110 749 992" focusable="false"><path pathLength="1" d="M393 894Q292 894 215 847.5Q138 801 95 713.5Q52 626 52 504Q52 382 95 296.5Q138 211 215 166.5Q292 122 393 122Q495 122 571.5 167Q648 212 691 297Q734 382 734 504Q734 626 691 713.5Q648 801 571.5 847.5Q495 894 393 894ZM393 748Q442 748 477.5 719.5Q513 691 532.5 636Q552 581 552 504Q552 432 532.5 380.5Q513 329 477.5 302Q442 275 393 275Q344 275 308.5 302Q273 329 254 380.5Q235 432 235 504Q235 581 254 636Q273 691 308.5 719.5Q344 748 393 748ZM641 1090Q558 1090 492 1062Q426 1034 379.5 985Q333 936 307 874L488 855Q502 889 529.5 910Q557 931 592 940Q627 949 661 949Q685 949 706.5 945Q728 941 745 935L777 1065Q755 1076 720 1083Q685 1090 641 1090Z"/></svg>
+</div>
+<div class="guides" aria-hidden="true"><i class="g-rail"></i><i class="g-col"></i></div>
 
-    <nav class="nav-menu" id="navMenu" aria-label="主导航">
-      <a href="#education">教育</a>
-      <a href="#journey">轨迹</a>
-      <a href="#skills">技能</a>
-      <a href="#projects">作品</a>
-      <a href="#about">关于</a>
-      <!-- 主题切换：状态写入 localStorage，见 script.js -->
-      <button class="theme-toggle" id="themeToggle" aria-label="切换深色 / 浅色主题">
-        <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true">
-          <circle cx="12" cy="12" r="4.2"/>
-          <g stroke-linecap="round">
-            <line x1="12" y1="2.5" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="21.5"/>
-            <line x1="2.5" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="21.5" y2="12"/>
-            <line x1="5.2" y1="5.2" x2="7" y2="7"/><line x1="17" y1="17" x2="18.8" y2="18.8"/>
-            <line x1="18.8" y1="5.2" x2="17" y2="7"/><line x1="7" y1="17" x2="5.2" y2="18.8"/>
-          </g>
-        </svg>
-        <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z"/>
-        </svg>
-      </button>
-    </nav>
-  </div>
+<!-- ══════════ 左侧导航轨（桌面端） ══════════ -->
+<aside class="rail" id="rail">
+  <a class="rail-brand" href="#top" aria-label="回到首页">WZQ</a>
+  <span class="rail-rule" aria-hidden="true"></span>
+  <span class="rail-tag" aria-hidden="true">RESUME · 2026</span>
+
+  <nav class="rail-nav" aria-label="页面导航">
+    <a href="#top" data-nav="top"><i></i><b>00</b><em>首页</em></a>
+    <a href="#profile" data-nav="profile"><i></i><b>01</b><em>简介</em></a>
+    <a href="#services" data-nav="services"><i></i><b>02</b><em>服务</em></a>
+    <a href="#experience" data-nav="experience"><i></i><b>03</b><em>经历</em></a>
+    <a href="#projects" data-nav="projects"><i></i><b>04</b><em>项目</em></a>
+    <a href="#skills" data-nav="skills"><i></i><b>05</b><em>技能</em></a>
+    <a href="#about" data-nav="about"><i></i><b>06</b><em>关于</em></a>
+    <a href="#contact" data-nav="contact"><i></i><b>07</b><em>联系</em></a>
+  </nav>
+
+  <div class="rail-progress" aria-hidden="true"><span id="railBar"></span></div>
+  <a class="rail-up" href="#top" aria-label="回到顶部">
+    <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 13V3M3.5 7.5 8 3l4.5 4.5"/></svg>
+  </a>
+</aside>
+
+<!-- ══════════ 顶栏（移动端） ══════════ -->
+<header class="topbar">
+  <a class="topbar-brand" href="#top"><b>WZQ</b><span>伍梓侨</span></a>
+  <button class="topbar-menu" id="menuBtn" type="button" aria-expanded="false" aria-controls="menu" aria-label="打开导航菜单">
+    <span class="topbar-sec" id="topbarSec">00 · 首页</span>
+    <i aria-hidden="true"></i>
+  </button>
+  <span class="topbar-progress" aria-hidden="true"><span id="topBar"></span></span>
 </header>
+<div class="menu" id="menu" hidden>
+  <nav aria-label="移动端导航">
+    <a href="#top"><b>00</b>首页</a>
+    <a href="#profile"><b>01</b>简介</a>
+    <a href="#services"><b>02</b>服务</a>
+    <a href="#experience"><b>03</b>经历</a>
+    <a href="#projects"><b>04</b>项目</a>
+    <a href="#skills"><b>05</b>技能</a>
+    <a href="#about"><b>06</b>关于</a>
+    <a href="#contact"><b>07</b>联系</a>
+  </nav>
+</div>
 
-<main id="top">
+<main id="main">
 
-<!-- ══════════ 首屏 ══════════
-     背景为纯 CSS 绘制的戈壁地平线，无图片素材 -->
-<section class="hero">
-  <div class="dunes" aria-hidden="true">
-    <div class="sun"></div>
-    <div class="dune dune-3"></div>
-    <div class="dune dune-2"></div>
-    <div class="dune dune-1"></div>
+<!-- ══════════ 00 首屏 ══════════ -->
+<section class="hero" id="top" data-sec="00" data-label="首页">
+  <div class="hero-hud" aria-hidden="true">
+    <span class="hud-h"></span>
+    <span class="hud-mark hud-tl">RESUME / 2026</span>
+    <span class="hud-mark hud-tr">XJU · MECH-ENG</span>
+    <span class="hud-mark hud-bl">MOVE THE CURSOR · 移动鼠标拨动水面</span>
   </div>
 
   <div class="hero-inner">
-    <div class="hero-text">
-      <p class="eyebrow reveal" data-delay="0">新疆大学 · 2026 级新生</p>
-      <h1 class="reveal" data-delay="1">伍<span class="thin">梓</span>侨</h1>
-      <p class="tagline reveal" data-delay="2">
-        机械设计制造及其自动化专业。<br>
-        高考结束后开始自学编程，<strong>入学前完成了第一个能跑起来的作品</strong>。
-      </p>
+    <p class="hero-eyebrow" data-intro style="--d:100">新疆大学 · 机械设计制造及其自动化 1 班 · 2026 级</p>
 
-      <ul class="hero-meta reveal" data-delay="3">
-        <li>
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18v12H3z"/><path d="M3 6l9 7 9-7"/></svg>
-          <a href="mailto:411264013@qq.com">411264013@qq.com</a>
-        </li>
-        <li>
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.6"/></svg>
-          <span>广东佛山</span>
-        </li>
-        <li>
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 19c-4 1.4-4-2.4-6-3m12 5v-3.9a3.4 3.4 0 0 0-.9-2.6c3-.3 6.2-1.5 6.2-6.7A5.2 5.2 0 0 0 19 3.3a4.9 4.9 0 0 0-.1-3.6s-1.1-.3-3.6 1.4a12.3 12.3 0 0 0-6.6 0C6.2-.6 5.1-.3 5.1-.3A4.9 4.9 0 0 0 5 3.3 5.2 5.2 0 0 0 3.6 6.9c0 5.2 3.2 6.4 6.2 6.7a3.4 3.4 0 0 0-.9 2.5V20"/></svg>
-          <a href="https://github.com/huasang457-boop" target="_blank" rel="noopener">github.com/huasang457-boop</a>
-        </li>
-      </ul>
+    <h1 class="hero-title" id="heroTitle">
+      <span class="sr-only">伍梓侨：从想法到交付</span>
+      <span class="t-solid" aria-hidden="true"><svg class="ts" viewBox="0 0 3000 1000" focusable="false"><path pathLength="1" style="--g:0" d="M250 465 350 371Q386 407 421.5 449Q457 491 486.5 532.5Q516 574 534 608L425 715Q409 680 381 636Q353 592 318.5 547Q284 502 250 465ZM739 332Q751 394 771 463Q791 532 820.5 599Q850 666 890.5 722.5Q931 779 984 817Q968 831 946.5 855.5Q925 880 905.5 906Q886 932 874 953Q819 904 777 836.5Q735 769 704 692.5Q673 616 652.5 538.5Q632 461 618 392ZM218 35 379 40Q373 239 351.5 413.5Q330 588 284.5 728.5Q239 869 159 967Q146 954 119 934.5Q92 915 63 895.5Q34 876 14 865Q93 784 135.5 659Q178 534 196 375Q214 216 218 35ZM608 35 770 41Q764 194 748.5 331.5Q733 469 704.5 587Q676 705 630.5 801Q585 897 517 968Q505 955 478 935.5Q451 916 421.5 896Q392 876 372 865Q462 787 511 663.5Q560 540 581.5 380.5Q603 221 608 35Z"/><path pathLength="1" style="--g:1" d="M1249 670H1393V793Q1393 816 1404 821.5Q1415 827 1455 827Q1464 827 1482 827Q1500 827 1521.5 827Q1543 827 1562.5 827Q1582 827 1594 827Q1617 827 1628 819.5Q1639 812 1644 787.5Q1649 763 1652 713Q1667 724 1690 734Q1713 744 1738 752Q1763 760 1782 764Q1774 840 1755.5 881.5Q1737 923 1701.5 939Q1666 955 1605 955Q1595 955 1578.5 955Q1562 955 1541.5 955Q1521 955 1501 955Q1481 955 1464.5 955Q1448 955 1439 955Q1363 955 1322 940Q1281 925 1265 890Q1249 855 1249 795ZM1401 669 1500 588Q1522 606 1547.5 629Q1573 652 1597 674.5Q1621 697 1636 715L1531 805Q1518 787 1495.5 763Q1473 739 1448 714Q1423 689 1401 669ZM1730 694 1857 634Q1878 664 1902.5 700.5Q1927 737 1950 771.5Q1973 806 1987 833L1851 903Q1839 876 1818 839.5Q1797 803 1773.5 765Q1750 727 1730 694ZM1105 645 1235 695Q1226 732 1213.5 772.5Q1201 813 1186.5 850.5Q1172 888 1155 918L1021 853Q1039 825 1055 790.5Q1071 756 1084 718.5Q1097 681 1105 645ZM1044 164H1468V286H1044ZM1199 26H1337V638H1199ZM1195 246 1293 277Q1274 337 1245.5 395.5Q1217 454 1183 504.5Q1149 555 1111 591Q1095 568 1067.5 537.5Q1040 507 1018 490Q1055 463 1088.5 423.5Q1122 384 1149.5 338Q1177 292 1195 246ZM1330 308Q1343 315 1366 329.5Q1389 344 1414.5 361.5Q1440 379 1461 394Q1482 409 1492 416L1416 532Q1401 515 1380.5 494Q1360 473 1337.5 451.5Q1315 430 1293.5 411Q1272 392 1256 379ZM1637 330V369H1785V330ZM1637 473V513H1785V473ZM1637 187V225H1785V187ZM1505 74H1924V625H1505Z"/><path pathLength="1" style="--g:2" d="M2093 143 2173 36Q2204 48 2239.5 65Q2275 82 2308.5 100.5Q2342 119 2363 136L2278 255Q2259 237 2227.5 216.5Q2196 196 2160.5 176.5Q2125 157 2093 143ZM2031 411 2107 302Q2138 313 2175 329Q2212 345 2245.5 363Q2279 381 2301 398L2220 519Q2201 502 2168.5 482Q2136 462 2099.5 443.5Q2063 425 2031 411ZM2067 866Q2094 829 2126.5 778.5Q2159 728 2193 670Q2227 612 2257 554L2364 651Q2338 703 2309 756.5Q2280 810 2250.5 862Q2221 914 2190 964ZM2568 25H2716V507H2568ZM2341 417H2945V554H2341ZM2379 161H2911V298H2379ZM2694 682 2813 624Q2846 667 2878 717.5Q2910 768 2936 817.5Q2962 867 2974 909L2843 975Q2833 935 2810 884Q2787 833 2756.5 780.5Q2726 728 2694 682ZM2407 957 2401 842 2471 798 2824 762Q2823 791 2825 828.5Q2827 866 2830 889Q2732 901 2663.5 910Q2595 919 2550 925.5Q2505 932 2478 937Q2451 942 2434.5 947Q2418 952 2407 957ZM2407 957Q2403 942 2394.5 916Q2386 890 2375.5 861.5Q2365 833 2356 813Q2376 807 2390.5 791.5Q2405 776 2422 748Q2431 735 2446.5 704Q2462 673 2480 631Q2498 589 2515.5 540Q2533 491 2546 442L2706 490Q2680 560 2645.5 630.5Q2611 701 2573.5 764Q2536 827 2499 877V880Q2499 880 2485 888Q2471 896 2453 908.5Q2435 921 2421 934Q2407 947 2407 957Z"/></svg></span>
+      <span class="t-outline" aria-hidden="true"><svg class="to" viewBox="0 0 3000 1000" focusable="false"><path pathLength="1" style="--g:0" d="M78 541H560V666H78ZM254 462H391V876H254ZM45 812Q112 803 199 790Q286 777 382 761.5Q478 746 572 731L580 855Q492 871 402.5 887.5Q313 904 229.5 918.5Q146 933 76 945ZM56 80H583V204H56ZM341 245 444 183Q470 216 496.5 254.5Q523 293 545.5 330.5Q568 368 580 399L469 470Q459 439 438 400Q417 361 391.5 320.5Q366 280 341 245ZM612 122H746V730H612ZM800 33H942V806Q942 859 930.5 889Q919 919 887 936Q855 952 810 957.5Q765 963 704 963Q700 934 685 894Q670 854 655 826Q693 827 728 827.5Q763 828 776 828Q790 828 795 823Q800 818 800 805ZM117 465Q113 451 105 427.5Q97 404 88 378.5Q79 353 71 335Q83 331 95 320Q107 309 118 293Q125 282 139.5 255.5Q154 229 169.5 192.5Q185 156 196 117L337 168Q320 207 295.5 248.5Q271 290 244 328Q217 366 192 395V397Q192 397 180.5 404Q169 411 154.5 421.5Q140 432 128.5 444Q117 456 117 465ZM117 465 114 365 177 325 462 311Q474 339 491 370.5Q508 402 520 424Q425 431 359 436Q293 441 251 444.5Q209 448 183 451Q157 454 142.5 457Q128 460 117 465Z"/><path pathLength="1" style="--g:1" d="M1621 458 1768 500Q1709 632 1616 724.5Q1523 817 1400.5 877Q1278 937 1130 973Q1122 956 1106.5 932Q1091 908 1074 883.5Q1057 859 1043 844Q1186 818 1300.5 769.5Q1415 721 1496.5 644.5Q1578 568 1621 458ZM1284 283 1427 338Q1392 382 1346 425.5Q1300 469 1251 507Q1202 545 1157 572Q1144 557 1123 537Q1102 517 1080 497.5Q1058 478 1041 466Q1087 445 1132.5 415.5Q1178 386 1217.5 352Q1257 318 1284 283ZM1384 463Q1449 617 1591.5 712Q1734 807 1960 840Q1945 855 1928 878.5Q1911 902 1896 926.5Q1881 951 1872 970Q1711 940 1594 879.5Q1477 819 1394.5 725Q1312 631 1254 502ZM1054 145H1946V287H1054ZM1583 357 1698 274Q1740 303 1789.5 339.5Q1839 376 1883.5 413.5Q1928 451 1956 483L1831 578Q1807 547 1765 507.5Q1723 468 1675 428.5Q1627 389 1583 357ZM1391 59 1530 11Q1550 44 1571 84Q1592 124 1602 153L1455 207Q1447 178 1428.5 136Q1410 94 1391 59Z"/><path pathLength="1" style="--g:2" d="M2354 238H2976V385H2354ZM2723 36H2874V806Q2874 871 2858 903Q2842 935 2801 952Q2761 968 2699.5 972.5Q2638 977 2554 976Q2551 955 2542 929Q2533 903 2521.5 877Q2510 851 2499 832Q2536 834 2575 835Q2614 836 2645 835.5Q2676 835 2688 835Q2707 835 2715 828Q2723 821 2723 805ZM2389 498 2518 438Q2539 473 2563.5 514Q2588 555 2611 594.5Q2634 634 2648 664L2509 734Q2498 703 2477.5 662.5Q2457 622 2433.5 578.5Q2410 535 2389 498ZM2156 331 2302 185 2304 187V973H2156ZM2250 30 2394 76Q2361 163 2314.5 251.5Q2268 340 2214 418.5Q2160 497 2103 555Q2096 537 2081 507.5Q2066 478 2049 448.5Q2032 419 2019 401Q2065 357 2108.5 297.5Q2152 238 2188.5 169.5Q2225 101 2250 30Z"/></svg></span>
+      <span class="t-bracket" aria-hidden="true"></span>
+    </h1>
 
-      <!-- 联系方式仅保留邮箱。手机号不写入本页（包括注释），
-           因为页面源码在线公开可见，写在注释里同样会被爬虫抓取。 -->
-    </div>
-
-    <figure class="hero-photo reveal" data-delay="2">
-      <!-- 图片放在本目录内，使 resume/ 可独立部署，不依赖上级目录 -->
-      <img src="avatar.jpg" alt="伍梓侨的个人照片" width="1281" height="1280" loading="eager">
-      <figcaption class="photo-tag">WZQ</figcaption>
-    </figure>
+    <p class="hero-name" data-intro style="--d:1100">
+      <span class="hn-line" aria-hidden="true"></span>
+      <b>伍梓侨</b><span class="hn-en">/ WU ZIQIAO</span>
+      <span class="hn-line" aria-hidden="true"></span>
+    </p>
+    <p class="hero-quote" data-intro style="--d:1350">
+      <span class="q-mark" aria-hidden="true">「</span><span class="q-text" id="heroQuote">先定一个能跑起来的目标，再倒推需要补什么</span><span class="q-mark" aria-hidden="true">」</span>
+    </p>
   </div>
 
-  <a class="scroll-cue" href="#education" aria-label="向下滚动">
-    <span></span>
+  <a class="scroll-cue" href="#profile" data-intro style="--d:1700" data-cursor="SCROLL">
+    <span>SCROLL</span><i aria-hidden="true"></i>
   </a>
 </section>
 
-<!-- ══════════ 教育背景 ══════════ -->
-<section id="education" class="section">
-  <div class="wrap">
-    <header class="section-head reveal">
-      <span class="sec-index">01</span>
-      <h2>教育背景</h2>
-    </header>
+<!-- ══════════ 01 简介 ══════════ -->
+<section class="sec" id="profile" data-sec="01" data-label="简介">
+  <header class="sec-head">
+    <span class="sec-no">01</span>
+    <h2 class="sec-title" data-scramble>PROFILE</h2>
+    <p class="sec-sub">个人简介 · 教育背景</p>
+  </header>
 
-    <div class="edu-card reveal">
-      <div class="edu-main">
-        <h3>新疆大学</h3>
-        <p class="edu-major">机械设计制造及其自动化 · 本科</p>
-        <p class="edu-note">国家「双一流」建设高校</p>
-      </div>
-      <div class="edu-side">
-        <p class="edu-time">2026.09 <span>—</span> 2030.06</p>
-        <p class="edu-status">预计毕业</p>
-      </div>
+  <div class="sec-body profile">
+    <p class="lead" data-reveal>我是<strong>伍梓侨</strong>，<br class="br-wide">新疆大学 2026 级机械设计制造及其自动化 1 班学生。</p>
+    <p class="body" data-reveal>高考结束后开始自学编程，<strong>入学前完成了第一个能跑起来的作品</strong>。编程不是我的专业课，是我自己想走的方向。</p>
+
+    <ul class="tags" data-reveal aria-label="个人标签">
+      <li><b>EDU</b> // 新疆大学 · 双一流</li>
+      <li><b>CODE</b> // C · C++ · PYTHON</li>
+      <li><b>TOOL</b> // AI 编程 · GIT</li>
+      <li><b>VISUAL</b> // PPT · 信息图</li>
+      <li><b>BASE</b> // 广东佛山</li>
+      <li><b>LIKE</b> // 写作 · 数码 · 游戏</li>
+    </ul>
+
+    <div class="edu" data-reveal>
+      <div class="edu-row"><span>EDUCATION</span><span class="edu-time">2026.09 — 2030.06</span></div>
+      <h3>新疆大学</h3>
+      <p>机械设计制造及其自动化 1 班 · 本科</p>
+      <p class="dim">国家「双一流」建设高校 · 预计 2030 年 6 月毕业</p>
     </div>
 
-    <p class="note reveal">
-      2026 级新生，尚未入学，因此本页不列 GPA 与在校课程 ——
-      下面展示的是<strong>入学之前我已经做出来的东西</strong>。
-    </p>
+    <p class="note" data-reveal>2026 级新生，还没有 GPA 与在校课程 —— 下面展示的是<strong>我已经能动手做出来的东西</strong>。</p>
   </div>
 </section>
 
-<!-- ══════════ 自学轨迹（特色区块） ══════════
-     这是本页的叙事主体：用真实文件的时间戳还原两个月的自学过程 -->
-<section id="journey" class="section section-alt">
-  <div class="wrap">
-    <header class="section-head reveal">
-      <span class="sec-index">02</span>
-      <h2>两个月，从第一个程序到第一个作品</h2>
-      <p class="section-dek">下面每一条都对应一个真实存在的源文件，时间取自文件创建日期。</p>
-    </header>
+<!-- ══════════ 02 服务 ══════════
+     核心交互：鼠标悬停卡片时，作品预览从卡片中浮出，
+     跟随鼠标移动并做 3D 倾斜（script.js 第 6 节）。
+     触屏设备没有悬停，改为轻触卡片切换预览。 -->
+<section class="sec" id="services" data-sec="02" data-label="服务">
+  <header class="sec-head">
+    <span class="sec-no">02</span>
+    <h2 class="sec-title" data-scramble>SERVICES</h2>
+    <p class="sec-sub">— 拿得出手的手艺，<br>我能为你做什么<span class="caret" aria-hidden="true"></span></p>
+  </header>
 
-    <ol class="timeline">
-      <li class="reveal">
-        <time datetime="2026-06-25">06 / 25</time>
-        <div class="tl-body">
-          <h4>第一个能跑的 C 程序</h4>
-          <p>高考结束。一个计算找零的小程序，17 行。<code>scanf</code> / <code>printf</code> / 变量。</p>
-        </div>
-      </li>
-      <li class="reveal">
-        <time datetime="2026-07-01">07 / 01</time>
-        <div class="tl-body">
-          <h4>单位换算</h4>
-          <p>厘米转英寸。开始处理整数与浮点的取值差异。</p>
-        </div>
-      </li>
-      <li class="reveal">
-        <time datetime="2026-07-03">07 / 03</time>
-        <div class="tl-body">
-          <h4>条件分支</h4>
-          <p>收银找零，加入 <code>if / else</code> 判断票额是否足够。</p>
-        </div>
-      </li>
-      <li class="reveal">
-        <time datetime="2026-07-09">07 / 09</time>
-        <div class="tl-body">
-          <h4>数位分解</h4>
-          <p>用 <code>while</code> 循环把一个整数逐位拆开。第一次写循环。</p>
-        </div>
-      </li>
-      <li class="reveal">
-        <time datetime="2026-07-18">07 / 18</time>
-        <div class="tl-body">
-          <h4>素数判断</h4>
-          <p>循环 + 标志变量。开始理解「用一个变量记录状态」这件事。</p>
-        </div>
-      </li>
-      <li class="reveal">
-        <time datetime="2026-07-26">07 / 26</time>
-        <div class="tl-body">
-          <h4>嵌套循环筛素数</h4>
-          <p>输出 100 以内全部素数。两层循环，一个月里最复杂的一个。</p>
-        </div>
-      </li>
-      <li class="reveal is-peak">
-        <time datetime="2026-08">08 月</time>
-        <div class="tl-body">
-          <h4>坦克大战 · 2127 行</h4>
-          <p>换一种方式做更大的东西：由我定义需求与验收标准，用 AI 编程工具实现一个可运行的完整游戏。</p>
-        </div>
-      </li>
-    </ol>
-  </div>
-</section>
+  <div class="sec-body">
+    <div class="works">
 
-<!-- ══════════ 专业技能 ══════════ -->
-<section id="skills" class="section">
-  <div class="wrap">
-    <header class="section-head reveal">
-      <span class="sec-index">03</span>
-      <h2>专业技能</h2>
-      <p class="section-dek">每一项都按实际掌握程度标注，不夸大。</p>
-    </header>
-
-    <div class="skill-grid">
-      <article class="skill reveal">
-        <div class="skill-top">
-          <h3>C / C++</h3>
-          <span class="level level-2">入门</span>
+      <!-- 服务 01：AI Coding · 悬停预览：用 AI 编程工具做出来的本站，v1 → v2 -->
+      <article class="work" data-reveal tabindex="0" data-cursor="VIEW" aria-labelledby="s1t" aria-describedby="s1d">
+        <div class="work-clip" aria-hidden="true">
+          <div class="work-art art-dusk">
+            <span class="art-sky"></span>
+            <span class="art-sun"></span>
+            <svg class="art-dunes" viewBox="0 0 400 300" preserveAspectRatio="none">
+              <path class="d3" d="M0,132 C40,112 88,98 140,106 C196,115 232,132 284,120 C330,110 368,96 400,104 L400,300 L0,300 Z"/>
+              <path class="d2" d="M0,176 C56,150 118,146 176,164 C232,181 270,196 326,180 C356,172 382,160 400,158 L400,300 L0,300 Z"/>
+              <path class="d1" d="M0,236 C62,214 132,208 202,226 C262,242 318,256 400,232 L400,300 L0,300 Z"/>
+            </svg>
+          </div>
+          <div class="work-shade"></div>
         </div>
-        <p>2026 年 6 月起自学。掌握变量、输入输出、条件分支、循环与嵌套循环。</p>
-        <p class="skill-honest">尚未涉及数组、指针与结构体 —— 计划在大一上学期补齐。</p>
+
+        <div class="work-content">
+          <div class="work-top"><span class="work-kicker">AI × CODE</span><span class="work-no" aria-hidden="true">01</span></div>
+          <h3 id="s1t">AI Coding</h3>
+          <p class="work-desc" id="s1d" data-typewriter>把模糊的想法拆成清晰的需求与验收标准，用 AI 编程工具和 Python 脚本，做出能跑、能用的网页与自动化小工具。</p>
+          <div class="work-foot">
+            <div class="marquee" aria-hidden="true"><div class="marquee-track">
+              <span>SYS_CORE // PYTHON · PROMPT ENG · LLM · HTML · WEBGL</span>
+              <span>SYS_CORE // PYTHON · PROMPT ENG · LLM · HTML · WEBGL</span>
+            </div></div>
+          </div>
+        </div>
+
+        <div class="work-preview" aria-hidden="true">
+          <div class="pv pv-site">
+            <div class="pv-bar"><i></i><i></i><i></i><span class="pv-url">huasang457-boop.github.io</span></div>
+            <!-- v1、v2 上下拼成一条长图，悬停时在同一竖直平面内循环滚动；
+                 后两张是前两张的复制，滚到一半时画面与开头完全一致，实现无缝循环 -->
+            <div class="pv-shots">
+              <div class="pv-strip">
+                <div class="pv-shot"><img src="assets/site-v1.webp" alt="" width="960" height="600" decoding="async"><span class="pv-tag">v1 · 静态版</span></div>
+                <div class="pv-shot"><img src="assets/site-v2.webp" alt="" width="960" height="600" decoding="async"><span class="pv-tag is-v2">v2 · 动态版</span></div>
+                <div class="pv-shot"><img src="assets/site-v1.webp" alt="" width="960" height="600" decoding="async"><span class="pv-tag">v1 · 静态版</span></div>
+                <div class="pv-shot"><img src="assets/site-v2.webp" alt="" width="960" height="600" decoding="async"><span class="pv-tag is-v2">v2 · 动态版</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
       </article>
 
-      <article class="skill reveal">
-        <div class="skill-top">
-          <h3>Python</h3>
-          <span class="level level-1">了解</span>
+      <!-- 服务 02：PPT 优化 · 悬停预览：一页式信息图《字节跳动发展史》；点击看大图、下载 PPTX -->
+      <article class="work" data-reveal tabindex="0" data-cursor="OPEN" data-lightbox="lightboxPpt" aria-labelledby="s2t" aria-describedby="s2d">
+        <div class="work-clip" aria-hidden="true">
+          <div class="work-art art-night">
+            <span class="art-sky"></span>
+            <span class="art-stars"></span>
+            <span class="art-sun"></span>
+            <svg class="art-dunes" viewBox="0 0 400 300" preserveAspectRatio="none">
+              <path class="d3" d="M0,118 C52,104 104,92 160,102 C214,112 256,126 304,114 C344,104 376,100 400,106 L400,300 L0,300 Z"/>
+              <path class="d2" d="M0,170 C44,160 96,146 150,156 C212,168 262,190 318,176 C352,168 380,166 400,170 L400,300 L0,300 Z"/>
+              <path class="d1" d="M0,228 C54,238 120,214 190,220 C260,226 332,250 400,236 L400,300 L0,300 Z"/>
+            </svg>
+          </div>
+          <div class="work-shade"></div>
         </div>
-        <p>坦克大战作品的项目语言，配合 pygame 使用。</p>
-        <p class="skill-honest">能读懂项目结构与配置项，独立编写能力仍在建立中。</p>
+
+        <div class="work-content">
+          <div class="work-top"><span class="work-kicker">VISUAL × SLIDES</span><span class="work-no" aria-hidden="true">02</span></div>
+          <h3 id="s2t">PPT 优化</h3>
+          <p class="work-desc" id="s2d" data-typewriter>梳理内容逻辑，重建版式层级与视觉节奏：把堆满文字的幻灯片，变成一眼能看懂、愿意看下去的演示。</p>
+          <div class="work-foot">
+            <!-- 真实链接指向大图：JS 可用时拦截并打开弹窗，JS 失效时仍能直接看图 -->
+            <a class="work-open" href="assets/ppt-bytedance-full.webp" data-lightbox-open="lightboxPpt" data-cursor="OPEN">
+              <span>查看作品 · 字节跳动发展史</span>
+              <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 11.5l7-7M5.5 4.5h6v6"/></svg>
+            </a>
+            <div class="marquee" aria-hidden="true"><div class="marquee-track">
+              <span>VISUAL // POWERPOINT · 信息图 · 数据可视化 · 版式设计</span>
+              <span>VISUAL // POWERPOINT · 信息图 · 数据可视化 · 版式设计</span>
+            </div></div>
+          </div>
+        </div>
+
+        <div class="work-preview" aria-hidden="true">
+          <div class="pv pv-slide">
+            <div class="pv-bar"><i></i><i></i><i></i><span>字节跳动发展史.pptx — 演示设计 01</span></div>
+            <img src="assets/ppt-bytedance.webp" alt="" width="1024" height="576" loading="lazy" decoding="async">
+          </div>
+        </div>
       </article>
 
-      <article class="skill reveal">
-        <div class="skill-top">
-          <h3>AI 编程工具</h3>
-          <span class="level level-3">能独立交付</span>
-        </div>
-        <p>能把一个模糊想法拆成明确需求、约束与验收标准，驱动工具产出可运行的成品，并完成验收与交付。</p>
-        <p class="skill-honest">这是我目前最有把握的一项能力。</p>
-      </article>
-
-      <article class="skill reveal">
-        <div class="skill-top">
-          <h3>Git / GitHub</h3>
-          <span class="level level-1">基础</span>
-        </div>
-        <p>代码托管、版本管理、静态页面部署。</p>
-      </article>
     </div>
   </div>
 </section>
 
-<!-- ══════════ 项目经历 ══════════ -->
-<section id="projects" class="section section-alt">
-  <div class="wrap">
-    <header class="section-head reveal">
-      <span class="sec-index">04</span>
-      <h2>作品</h2>
-    </header>
+<!-- ══════════ 03 经历 ══════════
+     时间轴由近及远；亮线随滚动推进，经过的节点依次点亮（script.js 第 3 节）。
+     条目结构参考 1114；C 语言自学收成一条，六个练习程序做成一个小栏目。 -->
+<section class="sec" id="experience" data-sec="03" data-label="经历">
+  <header class="sec-head">
+    <span class="sec-no">03</span>
+    <h2 class="sec-title" data-scramble>EXPERIENCE</h2>
+    <p class="sec-sub">— 从第一个 C 程序，<br>到自己的 AI 工具箱<span class="caret" aria-hidden="true"></span></p>
+  </header>
 
-    <article class="project reveal">
-      <div class="project-head">
-        <h3>坦克大战 · WZQ</h3>
-        <span class="project-time">2026.08</span>
-      </div>
-      <p class="project-role"><strong>我的角色：</strong>需求定义与验收</p>
-      <p>
-        我确定了玩法目标与全部约束 —— 原创校园场景底图、战场中央用砖墙拼出姓名缩写
-        <strong>WZQ</strong>、不使用任何第三方图片与音频素材 ——
-        由 AI 编程工具实现，我负责运行验收、演示录制与交付打包。
-      </p>
-      <ul class="project-facts">
-        <li><b>2127</b><span>行代码</span></li>
-        <li><b>8</b><span>个功能模块</span></li>
-        <li><b>0</b><span>个第三方素材</span></li>
-      </ul>
-      <!-- 演示动画：由游戏自带的 --demo 自动演示模式录制，非手动剪辑
-           lazy 加载，不拖慢首屏 -->
-      <figure class="project-demo">
-        <img src="tank-demo.gif" alt="坦克大战演示动画：战场中央的金色砖墙拼出 WZQ 字样，背景为校园黄昏场景"
-             width="457" height="312" loading="lazy" decoding="async">
-        <figcaption>
-          自动演示模式录制 · 战场中央金色砖墙拼出 <strong>WZQ</strong>，底图为程序化绘制的校园黄昏场景
-        </figcaption>
-      </figure>
-
-      <p class="project-stack">Python 3.12 · pygame 2.6 · 全部美术与音效由代码生成</p>
-      <p class="project-honest">
-        说明：本项目的代码实现由 AI 编程工具完成，我的贡献是需求定义与验收，
-        不主张对具体算法实现的作者身份。
-      </p>
-
-      <ul class="project-links">
-        <li>
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 19c-4 1.4-4-2.4-6-3m12 5v-3.9a3.4 3.4 0 0 0-.9-2.6c3-.3 6.2-1.5 6.2-6.7A5.2 5.2 0 0 0 19 3.3a4.9 4.9 0 0 0-.1-3.6s-1.1-.3-3.6 1.4a12.3 12.3 0 0 0-6.6 0C6.2-.6 5.1-.3 5.1-.3A4.9 4.9 0 0 0 5 3.3 5.2 5.2 0 0 0 3.6 6.9c0 5.2 3.2 6.4 6.2 6.7a3.4 3.4 0 0 0-.9 2.5V20"/></svg>
-          <a href="https://github.com/huasang457-boop/rst-contest/tree/main/tank-game" target="_blank" rel="noopener">查看游戏源码</a>
+  <div class="sec-body">
+    <div class="tl" id="timeline">
+      <span class="tl-track" aria-hidden="true"><span class="tl-fill" id="tlFill"></span></span>
+      <ol>
+        <li class="tl-item is-now" data-reveal>
+          <span class="tl-node" aria-hidden="true"></span>
+          <time datetime="2026-09">2026.09</time><span class="badge">至今</span>
+          <h3>开源模型与自动化工作流</h3>
+          <p>与其在重复劳动上耗时间，不如写个工具替自己干。开始把开源模型部署到自己的电脑上，借助 AI 写 Python 脚本、串起自动化流程——比如把课程视频批量转成文字稿，再交给 AI 提炼重点。每个工具都来自自己真实遇到的麻烦。</p>
+          <ul class="tl-tags"><li>DEV // PYTHON · CUDA</li><li>AI // WHISPER · WORKFLOW</li></ul>
         </li>
-      </ul>
-    </article>
-
-    <article class="project reveal">
-      <div class="project-head">
-        <h3>本页 · 个人在线简历</h3>
-        <span class="project-time">2026.08</span>
-      </div>
-      <p>
-        响应式单页，适配手机与桌面。深浅双主题并记忆选择，滚动进入视口渐显，首屏错落入场。
-      </p>
-      <p class="project-stack">原生 HTML / CSS / JavaScript · 零外部依赖 · 可直接双击打开</p>
-
-      <ul class="project-links">
-        <li>
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 19c-4 1.4-4-2.4-6-3m12 5v-3.9a3.4 3.4 0 0 0-.9-2.6c3-.3 6.2-1.5 6.2-6.7A5.2 5.2 0 0 0 19 3.3a4.9 4.9 0 0 0-.1-3.6s-1.1-.3-3.6 1.4a12.3 12.3 0 0 0-6.6 0C6.2-.6 5.1-.3 5.1-.3A4.9 4.9 0 0 0 5 3.3 5.2 5.2 0 0 0 3.6 6.9c0 5.2 3.2 6.4 6.2 6.7a3.4 3.4 0 0 0-.9 2.5V20"/></svg>
-          <a href="https://github.com/huasang457-boop/rst-contest" target="_blank" rel="noopener">本站源码已开源</a>
+        <li class="tl-item" data-reveal>
+          <span class="tl-node" aria-hidden="true"></span>
+          <time datetime="2026-08">2026.08 — 09</time>
+          <h3>视觉排版与演示设计</h3>
+          <p>喜欢用 PPT 帮自己理清思路：把字节跳动十四年的发展史压进一页信息图，就是一次这样的练习。做视觉时，我先问信息能不能一眼看懂，再考虑好不好看——先定逻辑与层级，然后才是配色、版式和动效节奏。</p>
+          <ul class="tl-tags"><li>DESIGN // POWERPOINT</li><li>MOTION // UI/UX</li></ul>
         </li>
-        <li>
-          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15 15 0 0 1 0 18a15 15 0 0 1 0-18"/></svg>
-          <a href="https://huasang457-boop.github.io/rst-contest/" target="_blank" rel="noopener">线上地址</a>
+        <li class="tl-item" data-reveal>
+          <span class="tl-node" aria-hidden="true"></span>
+          <time datetime="2026-06">2026.06 — 07</time>
+          <h3>C 语言自学</h3>
+          <p>高考结束后从零开始，两个月写了 6 个小程序：</p>
+          <ol class="mini" aria-label="C 语言练习程序">
+            <li><time datetime="2026-06-25">06.25</time>找零计算</li>
+            <li><time datetime="2026-07-01">07.01</time>单位换算</li>
+            <li><time datetime="2026-07-03">07.03</time>条件分支</li>
+            <li><time datetime="2026-07-09">07.09</time>数位分解</li>
+            <li><time datetime="2026-07-18">07.18</time>素数判断</li>
+            <li><time datetime="2026-07-26">07.26</time>嵌套循环</li>
+          </ol>
         </li>
-      </ul>
-    </article>
+      </ol>
+    </div>
   </div>
 </section>
 
-<!-- ══════════ 关于我 ══════════ -->
-<section id="about" class="section">
-  <div class="wrap">
-    <header class="section-head reveal">
-      <span class="sec-index">05</span>
-      <h2>关于我</h2>
-    </header>
+<!-- ══════════ 04 项目 ══════════
+     参考 1116 的 PROJECTS：两张文字型项目卡。
+     卡片内有跟随鼠标的光斑（script.js 第 7 节），描述进入视口后逐字打出。 -->
+<section class="sec" id="projects" data-sec="04" data-label="项目">
+  <header class="sec-head">
+    <span class="sec-no">04</span>
+    <h2 class="sec-title" data-scramble>PROJECTS</h2>
+    <p class="sec-sub">— 做过的东西，<br>都能真的跑起来<span class="caret" aria-hidden="true"></span></p>
+  </header>
 
-    <blockquote class="statement reveal">
-      <p>
-        我录取的是机械设计制造及其自动化 —— 编程不是我的专业课，是我自己想走的方向。
-      </p>
-      <p>
-        比起把语法学完再动手，我更倾向于先定一个「能跑起来」的目标，再倒推需要补什么。
-      </p>
-      <p>
-        我清楚自己的起点：C 才刚入门，游戏的实现细节我还讲不透。
-        但<strong>「把一件东西从想法做到能交付」这个过程，我已经完整走过一遍了</strong>。
-      </p>
+  <div class="sec-body">
+    <div class="projects">
+
+      <!-- 项目 01：本地运行的语音转写 + AI 分析工具（实测数据来自该项目的测试记录） -->
+      <article class="proj" data-reveal>
+        <div class="proj-top"><span class="proj-case">01 / CASE FILE</span></div>
+        <p class="proj-kicker">AI // SPEECH · LOCAL</p>
+        <h3>AI 本地知识库助手</h3>
+        <p class="proj-desc" data-typewriter>基于开源语音模型搭的本地小工具：把课程视频、讲座录音批量转成带时间轴的文字稿，沉淀成能搜索、能交给 AI 提问的资料库。在 4GB 显存上实测，中文准确率约 96%，一小时音频约两分钟转完。</p>
+        <ul class="proj-tags" aria-label="技术栈"><li>Python</li><li>faster-whisper</li><li>CUDA</li><li>Prompt Engineering</li></ul>
+      </article>
+
+      <!-- 项目 02：本站。右上角箭头回到首页，看作品本身 -->
+      <article class="proj" data-reveal>
+        <div class="proj-top">
+          <span class="proj-case">02 / CASE FILE</span>
+          <a class="proj-go" href="#top" aria-label="回到首页，看看这个作品集本身" data-cursor="LIVE">
+            <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 11.5l7-7M5.5 4.5h6v6"/></svg>
+          </a>
+        </div>
+        <p class="proj-kicker">WEB // WEBGL</p>
+        <h3>极简主义技术自留地</h3>
+        <p class="proj-desc" data-typewriter>从零搭起的个人交互作品集，也就是你正在看的这一页。我定视觉方向与交互，借助 AI 编程工具实现：用实时水波、跟随鼠标的光斑和滚动叙事，把做过的东西变成可以上手玩的体验。</p>
+        <ul class="proj-tags" aria-label="技术栈"><li>HTML · CSS · JS</li><li>WebGL</li><li>GLSL Shader</li><li>零外部依赖</li></ul>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ 05 技能 ══════════
+     和 C 语言自学栏目同一套小网格：左边是掌握程度，右边是技能名 -->
+<section class="sec" id="skills" data-sec="05" data-label="技能">
+  <header class="sec-head">
+    <span class="sec-no">05</span>
+    <h2 class="sec-title" data-scramble>SKILLS</h2>
+    <p class="sec-sub">— 每一项都按实际<br>掌握程度标注，不夸大<span class="caret" aria-hidden="true"></span></p>
+  </header>
+
+  <div class="sec-body">
+    <ul class="mini mini-skills" data-reveal aria-label="专业技能与掌握程度">
+      <li class="is-strong" style="--i:0"><span class="lv">能独立交付</span>AI 编程工具</li>
+      <li style="--i:1"><span class="lv">入门</span>C / C++</li>
+      <li style="--i:2"><span class="lv">了解</span>Python</li>
+      <li style="--i:3"><span class="lv">基础</span>Git / GitHub</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ══════════ 06 关于 ══════════
+     陈述段落随滚动逐字点亮（script.js 第 3 节） -->
+<section class="sec" id="about" data-sec="06" data-label="关于">
+  <header class="sec-head">
+    <span class="sec-no">06</span>
+    <h2 class="sec-title" data-scramble>ABOUT</h2>
+    <p class="sec-sub">关于我</p>
+  </header>
+
+  <div class="sec-body">
+    <blockquote class="statement" id="statement">
+      <p>我录取的是机械设计制造及其自动化 —— 编程不是我的专业课，是我自己想走的方向。</p>
+      <p>比起把语法学完再动手，我更倾向于先定一个「能跑起来」的目标，再倒推需要补什么。</p>
+      <p>我清楚自己的起点：C 才刚入门。但<strong>「把一件东西从想法做到能交付」这个过程，我已经完整走过一遍了</strong>。</p>
     </blockquote>
 
-    <div class="interests reveal">
-      <h3>此外</h3>
+    <div class="also" data-reveal>
+      <h3>ALSO // 此外</h3>
       <ul>
         <li>喜欢写东西，正在准备做图文内容账号</li>
         <li>关注电脑硬件与数码</li>
@@ -346,26 +381,101 @@
   </div>
 </section>
 
+<!-- ══════════ 07 联系 ══════════
+     JS 可用时，联系方式先被遮住，点击后「解码」显示并复制到剪贴板；
+     JS 不可用时直接显示原文，右侧箭头链接始终可用 -->
+<section class="sec" id="contact" data-sec="07" data-label="联系">
+  <header class="sec-head">
+    <span class="sec-no">07</span>
+    <h2 class="sec-title" data-scramble>CONTACT</h2>
+    <p class="sec-sub">— 欢迎老师与同学<br>随时联系<span class="caret" aria-hidden="true"></span></p>
+  </header>
+
+  <div class="sec-body">
+    <div class="hex" aria-hidden="true"><div class="hex-grid" id="hexGrid"></div></div>
+    <p class="hex-hint"><i aria-hidden="true"></i>CLICK A ROW TO DECODE &amp; COPY<span> · 点击任意一行，解码并复制</span></p>
+
+    <ul class="crows">
+      <li>
+        <button class="crow" type="button" data-copy="411264013@qq.com" data-cursor="COPY">
+          <span class="crow-key">// EMAIL</span>
+          <span class="crow-val" data-mask="Email [CLICK_TO_REVEAL]">411264013@qq.com</span>
+          <span class="crow-state">COPY</span>
+        </button>
+        <a class="crow-go" href="mailto:411264013@qq.com" aria-label="给 411264013@qq.com 发邮件" data-cursor="MAIL">
+          <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 11.5l7-7M5.5 4.5h6v6"/></svg>
+        </a>
+      </li>
+      <li>
+        <button class="crow" type="button" data-copy="github.com/huasang457-boop" data-cursor="COPY">
+          <span class="crow-key">// GITHUB</span>
+          <span class="crow-val" data-mask="GitHub [CLICK_TO_REVEAL]">github.com/huasang457-boop</span>
+          <span class="crow-state">COPY</span>
+        </button>
+        <a class="crow-go" href="https://github.com/huasang457-boop" target="_blank" rel="noopener" aria-label="打开 GitHub 主页（新窗口）" data-cursor="OPEN">
+          <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 11.5l7-7M5.5 4.5h6v6"/></svg>
+        </a>
+      </li>
+      <li>
+        <button class="crow" type="button" data-print data-cursor="PDF">
+          <span class="crow-key">// RESUME</span>
+          <span class="crow-val">Save as PDF [CLICK_TO_PRINT]</span>
+          <span class="crow-state">PRINT</span>
+        </button>
+      </li>
+    </ul>
+  </div>
+</section>
+
 </main>
 
 <!-- ══════════ 页脚 ══════════ -->
-<footer class="site-footer">
-  <div class="wrap footer-inner">
-    <div>
-      <p class="footer-name">伍梓侨 <span>WZQ</span></p>
-      <p class="footer-sub">新疆大学 · 机械设计制造及其自动化 · 2026 级</p>
-    </div>
-    <ul class="footer-links">
-      <li><a href="mailto:411264013@qq.com">411264013@qq.com</a></li>
-      <li><a href="https://github.com/huasang457-boop/rst-contest" target="_blank" rel="noopener">本作品源码（GitHub）</a></li>
-      <li><a href="https://huasang457-boop.github.io/rst-contest/" target="_blank" rel="noopener">线上地址</a></li>
-    </ul>
+<footer class="footer">
+  <div class="footer-row">
+    <p class="footer-name">伍梓侨 <span>WU ZIQIAO</span></p>
+    <p>新疆大学 · 机械设计制造及其自动化 1 班 · 2026 级</p>
+    <a class="footer-top" href="#top" data-cursor="TOP">BACK TO TOP ↑</a>
   </div>
-  <p class="colophon">
-    本页为 RST 竞赛训练营入营筛选赛作品 · 原生 HTML / CSS / JS 手写，无框架与外部依赖
-  </p>
+  <p class="colophon">© 2026 WZQ · 原生 HTML / CSS / JavaScript · WebGL 实时水波 · 无框架、零外部依赖</p>
 </footer>
 
+<!-- ══════════ 浮层：右下角状态卡 / 复制提示 / 自定义光标 ══════════ -->
+<a class="chip" href="#contact" data-cursor="HI">
+  <span class="chip-logo" aria-hidden="true">W</span>
+  <span class="chip-txt">
+    <small><i class="chip-dot" aria-hidden="true"></i>WZQ-OS / ONLINE · <time id="clock">UTC+8</time></small>
+    <b>CONTACT ME</b>
+  </span>
+</a>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<div class="cursor" id="cursor" aria-hidden="true">
+  <div class="cursor-ring-pos"><div class="cursor-ring"><span class="cursor-label"></span></div></div>
+  <div class="cursor-dot-pos"><div class="cursor-dot"></div></div>
+</div>
+
+<!-- ══════════ 作品大图：原生 <dialog>，Esc / 点击遮罩 / 关闭按钮均可关闭 ══════════ -->
+<dialog class="lightbox" id="lightboxPpt" aria-labelledby="lbPptTitle">
+  <div class="lb-head">
+    <div>
+      <p class="lb-kicker">WORK · 演示设计 01</p>
+      <h2 id="lbPptTitle">字节跳动发展史 · 一页式信息图</h2>
+    </div>
+    <div class="lb-actions">
+      <a class="lb-btn" href="works/bytedance-history.pptx" download="字节跳动发展史.pptx">
+        <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2.5v8M4.5 7 8 10.5 11.5 7M3 13.5h10"/></svg>下载 PPTX
+      </a>
+      <button class="lb-close" type="button" data-lightbox-close aria-label="关闭">
+        <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 3.5l9 9M12.5 3.5l-9 9"/></svg>
+      </button>
+    </div>
+  </div>
+  <img class="lb-img" src="assets/ppt-bytedance-full.webp" alt="《字节跳动发展史》幻灯片：2012—2026 年四个阶段的 11 个里程碑、核心数据、营收图表与四大业务版图" width="2400" height="1350" loading="lazy" decoding="async">
+  <p class="lb-note">原生 PPTX：文字、形状与图表均可在 PowerPoint 中直接编辑 · 数据截至 2026 年，来源见页脚</p>
+</dialog>
+
+<script src="water.js"></script>
 <script src="script.js"></script>
 </body>
 </html>
